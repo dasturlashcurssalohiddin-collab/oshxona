@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+<title>Oshxona Menyu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF6EE;
+    --surface:#FFFFFF;
+    --surface-2:#F1E9DA;
+    --ink:#20262B;
+    --ink-soft:#5B6670;
+    --primary:#1C7189;
+    --primary-dark:#0E4C5C;
+    --primary-light:#DCEEF1;
+    --accent:#C8632B;
+    --accent-light:#F6E1D0;
+    --gold:#C99A2E;
+    --line:#E4D9C4;
+    --danger:#B94A3B;
+    --radius-lg:22px;
+    --radius-md:14px;
+    --radius-sm:8px;
+    --shadow:0 8px 24px rgba(32,38,43,0.10);
+    --shadow-lg:0 20px 50px rgba(14,76,92,0.22);
+    color-scheme: light;
+  }
+  [data-theme="dark"]{
+    --bg:#141A1D;
+    --surface:#1D2528;
+    --surface-2:#232C30;
+    --ink:#EFEDE7;
+    --ink-soft:#A9B3B7;
+    --primary:#4FB4C9;
+    --primary-dark:#7FD1E2;
+    --primary-light:#233B41;
+    --accent:#E08A55;
+    --accent-light:#3A2A20;
+    --gold:#E0BB60;
+    --line:#333E42;
+    --shadow:0 8px 24px rgba(0,0,0,0.35);
+    --shadow-lg:0 20px 50px rgba(0,0,0,0.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Manrope',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    transition:background .35s ease,color .35s ease;
+    padding-bottom:60px;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  button{font-family:inherit;}
+  ::selection{background:var(--gold);color:#20262B;}
+
+  /* ---------- decorative ceramic motif ---------- */
+  .motif{
+    position:absolute;inset:0;pointer-events:none;opacity:.5;
+  }
+  .motif svg{width:100%;height:100%;}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:40;
+    background:var(--bg);
+    padding:14px 16px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  .topbar{
+    display:flex;align-items:center;gap:10px;
+    max-width:720px;margin:0 auto;
+  }
+  .logo-wrap{
+    width:46px;height:46px;border-radius:50%;
+    background:radial-gradient(circle at 32% 30%, var(--primary-light), var(--primary) 70%);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;position:relative;
+    border:2px solid var(--surface);
+    box-shadow:0 0 0 2px var(--primary);
+  }
+  .logo-wrap span{font-size:20px;}
+  .search-box{
+    flex:1;
+    display:flex;align-items:center;gap:8px;
+    background:var(--surface);
+    border:1.5px solid var(--line);
+    border-radius:999px;
+    padding:10px 16px;
+    transition:border-color .2s;
+  }
+  .search-box:focus-within{border-color:var(--primary);}
+  .search-box input{
+    border:none;outline:none;background:transparent;
+    width:100%;font-size:16px;color:var(--ink);font-weight:600;
+  }
+  .search-box input::placeholder{color:var(--ink-soft);font-weight:500;}
+  .search-icon{color:var(--ink-soft);flex-shrink:0;}
+  .menu-btn{
+    width:46px;height:46px;border-radius:50%;
+    border:1.5px solid var(--line);background:var(--surface);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;flex-shrink:0;color:var(--ink);
+    transition:background .2s,transform .15s;
+  }
+  .menu-btn:active{transform:scale(.92);}
+
+  /* ---------- dropdown menu ---------- */
+  .dropdown-panel{
+    position:fixed;top:0;right:0;height:100%;width:min(320px,86vw);
+    background:var(--surface);
+    box-shadow:var(--shadow-lg);
+    transform:translateX(105%);
+    transition:transform .32s cubic-bezier(.22,.9,.3,1);
+    z-index:100;
+    padding:22px 20px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .dropdown-panel.open{transform:translateX(0);}
+  .dropdown-head{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:14px;
+  }
+  .dropdown-head h3{margin:0;font-size:20px;}
+  .close-x{
+    width:38px;height:38px;border-radius:50%;border:none;
+    background:var(--surface-2);color:var(--ink);font-size:18px;cursor:pointer;
+  }
+  .dd-item{
+    display:flex;align-items:center;gap:12px;
+    padding:14px 12px;border-radius:var(--radius-md);
+    background:transparent;border:none;text-align:left;
+    font-size:16px;font-weight:700;color:var(--ink);cursor:pointer;
+    transition:background .15s;
+  }
+  .dd-item:hover{background:var(--surface-2);}
+  .dd-item .ic{font-size:20px;width:26px;text-align:center;}
+  .dd-sub{font-size:12px;font-weight:500;color:var(--ink-soft);margin-left:38px;margin-top:-8px;margin-bottom:4px;}
+  .dd-divider{height:1px;background:var(--line);margin:10px 0;}
+  .lang-row{display:flex;gap:8px;padding:0 12px;margin-top:4px;}
+  .lang-chip{
+    flex:1;padding:9px 0;border-radius:999px;border:1.5px solid var(--line);
+    background:var(--surface);font-weight:800;font-size:13px;cursor:pointer;color:var(--ink-soft);
+  }
+  .lang-chip.active{border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark);}
+  .overlay{
+    position:fixed;inset:0;background:rgba(20,26,29,.45);
+    opacity:0;pointer-events:none;transition:opacity .3s;z-index:90;
+    backdrop-filter:blur(1px);
+  }
+  .overlay.show{opacity:1;pointer-events:auto;}
+
+  /* ---------- hero / greeting ---------- */
+  .hero{
+    max-width:720px;margin:26px auto 6px;padding:0 20px;
+  }
+  .hero .eyebrow{
+    font-size:12.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:6px;
+  }
+  .hero h1{font-size:30px;margin:0 0 4px;color:var(--ink);}
+  .hero p{margin:0;color:var(--ink-soft);font-size:15px;font-weight:500;}
+
+  /* ---------- categories ---------- */
+  .section-title{
+    max-width:720px;margin:30px auto 12px;padding:0 20px;
+    display:flex;align-items:baseline;justify-content:space-between;
+  }
+  .section-title h2{font-size:20px;margin:0;}
+  .clear-filter{
+    border:none;background:none;color:var(--primary);font-weight:800;font-size:13px;cursor:pointer;
+    display:none;
+  }
+  .clear-filter.show{display:inline-block;}
+
+  .cat-grid{
+    max-width:720px;margin:0 auto;padding:0 20px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  }
+  .cat-card{
+    background:var(--surface);border:1.5px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:16px 8px 12px;
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;
+    opacity:0;transform:translateY(14px) scale(.94);
+    animation:pop .5s cubic-bezier(.2,.9,.3,1.2) forwards;
+  }
+  .cat-card:hover{box-shadow:var(--shadow);transform:translateY(-3px);}
+  .cat-card.active{border-color:var(--primary);background:var(--primary-light);}
+  .cat-card .icon-ring{
+    width:52px;height:52px;border-radius:50%;
+    background:var(--surface-2);
+    display:flex;align-items:center;justify-content:center;font-size:24px;
+  }
+  .cat-card span.name{font-size:13px;font-weight:800;text-align:center;line-height:1.2;}
+  @keyframes pop{ to{opacity:1;transform:translateY(0) scale(1);} }
+
+  /* ---------- items grid ---------- */
+  .items-grid{
+    max-width:720px;margin:0 auto;padding:4px 20px 20px;
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  }
+  .item-card{
+    background:var(--surface);border:1.5px solid var(--line);
+    border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;
+    opacity:0;transform:translateY(16px) scale(.96);
+    animation:pop .5s cubic-bezier(.2,.9,.3,1.2) forwards;
+    transition:box-shadow .2s,transform .2s;
+  }
+  .item-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px);}
+  .item-img{
+    height:110px;width:100%;
+    background:linear-gradient(135deg,var(--primary-light),var(--accent-light));
+    display:flex;align-items:center;justify-content:center;font-size:38px;
+  }
+  .item-body{padding:12px 12px 14px;}
+  .item-body .name{font-weight:800;font-size:14.5px;margin:0 0 4px;line-height:1.25;}
+  .item-body .price{color:var(--accent);font-weight:800;font-size:14px;}
+  .no-results{
+    grid-column:1/-1;text-align:center;padding:40px 10px;color:var(--ink-soft);font-weight:600;
+  }
+
+  /* ---------- item detail modal ---------- */
+  .modal-backdrop{
+    position:fixed;inset:0;background:rgba(20,26,29,.55);
+    z-index:150;display:flex;align-items:flex-end;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .28s;
+  }
+  .modal-backdrop.show{opacity:1;pointer-events:auto;}
+  @media(min-width:600px){.modal-backdrop{align-items:center;}}
+  .item-modal{
+    background:var(--surface);width:100%;max-width:480px;
+    border-radius:26px 26px 0 0;
+    padding:0 0 26px;
+    transform:translateY(40px);transition:transform .32s cubic-bezier(.22,.9,.3,1);
+    max-height:88vh;overflow-y:auto;
+  }
+  @media(min-width:600px){.item-modal{border-radius:26px;}}
+  .modal-backdrop.show .item-modal{transform:translateY(0);}
+  .item-modal-img{
+    height:200px;width:100%;
+    background:linear-gradient(135deg,var(--primary-light),var(--accent-light));
+    display:flex;align-items:center;justify-content:center;font-size:70px;
+    position:relative;
+  }
+  .item-modal-close{
+    position:absolute;top:14px;right:14px;
+    width:38px;height:38px;border-radius:50%;border:none;
+    background:rgba(255,255,255,.85);color:#20262B;font-size:18px;cursor:pointer;
+  }
+  .item-modal-body{padding:20px 22px 4px;}
+  .price-badge{
+    display:inline-block;background:var(--accent);color:#fff;font-weight:800;
+    padding:6px 14px;border-radius:999px;font-size:15px;margin-bottom:10px;
+  }
+  .item-modal-body h3{font-size:22px;margin:0 0 8px;}
+  .item-modal-body .desc{color:var(--ink-soft);font-size:14.5px;line-height:1.55;font-weight:500;}
+  .modal-actions{
+    display:flex;gap:10px;padding:18px 22px 0;
+  }
+  .btn-speak{
+    width:52px;height:52px;flex-shrink:0;border-radius:50%;
+    border:1.5px solid var(--line);background:var(--surface-2);
+    font-size:20px;cursor:pointer;color:var(--ink);
+    transition:background .2s;
+  }
+  .btn-speak.speaking{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .btn-buy{
+    flex:1;border:none;border-radius:999px;background:var(--primary);color:#fff;
+    font-weight:800;font-size:16px;cursor:pointer;transition:background .2s,transform .15s;
+  }
+  .btn-buy:active{transform:scale(.97);}
+  .btn-buy.bought{background:#3E9A5E;}
+
+  /* ---------- toast ---------- */
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:999px;
+    font-weight:700;font-size:14px;z-index:200;opacity:0;transition:all .3s;pointer-events:none;
+    box-shadow:var(--shadow-lg);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* ---------- welcome / info modal ---------- */
+  .info-backdrop{
+    position:fixed;inset:0;background:rgba(20,26,29,.6);z-index:300;
+    display:flex;align-items:center;justify-content:center;padding:20px;
+    opacity:0;pointer-events:none;transition:opacity .3s;
+  }
+  .info-backdrop.show{opacity:1;pointer-events:auto;}
+  .info-card{
+    background:var(--surface);border-radius:24px;max-width:400px;width:100%;
+    padding:26px 24px 22px;position:relative;
+    box-shadow:var(--shadow-lg);
+    transform:scale(.9) translateY(10px);transition:transform .32s cubic-bezier(.22,.9,.3,1);
+    border:1px solid var(--line);
+  }
+  .info-backdrop.show .info-card{transform:scale(1) translateY(0);}
+  .info-close{
+    position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;
+    border:none;background:var(--surface-2);color:var(--ink);font-size:16px;cursor:pointer;
+  }
+  .info-icon{font-size:34px;margin-bottom:10px;}
+  .info-card h3{font-size:19px;margin:0 0 8px;padding-right:20px;}
+  .info-card p{font-size:14.5px;color:var(--ink-soft);line-height:1.6;font-weight:500;margin:0;}
+  .info-nav{
+    display:flex;align-items:center;justify-content:space-between;margin-top:20px;
+  }
+  .info-arrow{
+    width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);
+    background:var(--surface);cursor:pointer;font-size:16px;color:var(--ink);
+  }
+  .info-arrow:disabled{opacity:.3;cursor:default;}
+  .info-dots{display:flex;gap:6px;}
+  .info-dots span{width:6px;height:6px;border-radius:50%;background:var(--line);transition:background .2s,width .2s;}
+  .info-dots span.active{background:var(--primary);width:16px;border-radius:4px;}
+
+  /* ---------- settings modal ---------- */
+  .settings-body{padding:6px 4px;}
+  .setting-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 12px;border-radius:var(--radius-md);
+  }
+  .setting-row .label{font-weight:700;font-size:15px;display:flex;align-items:center;gap:10px;}
+  .switch{
+    width:48px;height:28px;border-radius:999px;background:var(--surface-2);
+    border:1.5px solid var(--line);position:relative;cursor:pointer;flex-shrink:0;
+  }
+  .switch::after{
+    content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;
+    background:var(--ink-soft);transition:left .2s,background .2s;
+  }
+  .switch.on{background:var(--primary-light);border-color:var(--primary);}
+  .switch.on::after{left:22px;background:var(--primary);}
+
+  /* ---------- password gate ---------- */
+  .pw-card{max-width:340px;}
+  .pw-input{
+    width:100%;padding:13px 16px;border-radius:12px;border:1.5px solid var(--line);
+    background:var(--surface-2);font-size:16px;margin:14px 0;color:var(--ink);letter-spacing:2px;
+    outline:none;
+  }
+  .pw-input:focus{border-color:var(--primary);}
+  .pw-submit{
+    width:100%;padding:13px 0;border:none;border-radius:999px;background:var(--primary);
+    color:#fff;font-weight:800;font-size:15px;cursor:pointer;
+  }
+  .pw-error{color:var(--danger);font-size:13px;font-weight:700;margin-top:-4px;margin-bottom:6px;display:none;}
+  .pw-error.show{display:block;}
+
+  [data-i18n-hide]{display:none;}
+</style>
+</head>
+<body data-theme="light">
+
+<!-- ===================== HEADER ===================== -->
+<header>
+  <div class="topbar">
+    <div class="logo-wrap" id="logoWrap"><span id="logoEmoji">🍽️</span></div>
+    <div class="search-box">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="searchInput" type="text" data-i18n-ph="search_ph" placeholder="Qidirish: masalan «ichimliklar»">
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<div class="hero">
+  <div class="eyebrow" data-i18n="hero_eyebrow">Xush kelibsiz</div>
+  <h1 class="display" data-i18n="hero_title">Bugun nima tanlaysiz?</h1>
+  <p data-i18n="hero_sub">QR kodni skaner qilib to'g'ridan-to'g'ri menyuga tushdingiz — buyurtma bering va zavqlaning.</p>
+</div>
+
+<!-- ===================== CATEGORIES ===================== -->
+<div class="section-title">
+  <h2 data-i18n="cat_title">Menyu bo'limlari</h2>
+  <button class="clear-filter" id="clearFilterBtn" data-i18n="clear_all">Barchasi</button>
+</div>
+<div class="cat-grid" id="catGrid"></div>
+
+<!-- ===================== ITEMS ===================== -->
+<div class="section-title">
+  <h2 id="itemsTitle" data-i18n="items_title">Barcha taomlar</h2>
+</div>
+<div class="items-grid" id="itemsGrid"></div>
+
+<!-- ===================== DROPDOWN MENU ===================== -->
+<div class="overlay" id="overlay"></div>
+<nav class="dropdown-panel" id="dropdownPanel">
+  <div class="dropdown-head">
+    <h3 data-i18n="menu_title">Menyu</h3>
+    <button class="close-x" id="ddClose">✕</button>
+  </div>
+
+  <div class="lang-row">
+    <button class="lang-chip" data-lang="uz">UZ</button>
+    <button class="lang-chip" data-lang="ru">RU</button>
+    <button class="lang-chip" data-lang="en">EN</button>
+  </div>
+  <div class="dd-divider"></div>
+
+  <button class="dd-item" id="openSettings"><span class="ic">⚙️</span><span data-i18n="settings">Sozlamalar</span></button>
+  <div class="dd-divider"></div>
+  <button class="dd-item" data-panel="chef"><span class="ic">👨‍🍳</span><span data-i18n="chef_panel">Oshpaz paneli</span></button>
+  <div class="dd-sub" data-i18n="chef_panel_sub">Ovqat miqdorini boshqarish</div>
+  <button class="dd-item" data-panel="admin"><span class="ic">🔐</span><span data-i18n="admin_panel">Admin paneli</span></button>
+  <div class="dd-sub" data-i18n="admin_panel_sub">To'liq boshqaruv</div>
+</nav>
+
+<!-- ===================== SETTINGS MODAL ===================== -->
+<div class="modal-backdrop" id="settingsBackdrop">
+  <div class="item-modal" style="border-radius:26px;max-width:380px;">
+    <div class="item-modal-body settings-body" style="padding:22px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <h3 style="margin:0;font-size:19px;" data-i18n="settings">Sozlamalar</h3>
+        <button class="close-x" id="settingsClose">✕</button>
+      </div>
+      <div class="setting-row">
+        <span class="label">🌗 <span data-i18n="dark_mode">Tungi rejim</span></span>
+        <div class="switch" id="themeSwitch"></div>
+      </div>
+      <div class="setting-row">
+        <span class="label">🔊 <span data-i18n="voice_setting">Ovozli o'qish</span></span>
+        <div class="switch on" id="voiceSwitch"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PASSWORD GATE MODAL ===================== -->
+<div class="info-backdrop" id="pwBackdrop">
+  <div class="info-card pw-card">
+    <button class="info-close" id="pwClose">✕</button>
+    <div class="info-icon">🔒</div>
+    <h3 id="pwTitle" data-i18n="pw_title">Panelga kirish</h3>
+    <p data-i18n="pw_sub">Bu panel faqat xodimlar uchun. Iltimos, parolni kiriting.</p>
+    <input type="password" class="pw-input" id="pwInput" placeholder="••••••" data-i18n-ph="pw_ph">
+    <div class="pw-error" id="pwError" data-i18n="pw_error">Parol noto'g'ri</div>
+    <button class="pw-submit" id="pwSubmit" data-i18n="pw_submit">Kirish</button>
+  </div>
+</div>
+
+<!-- ===================== ITEM DETAIL MODAL ===================== -->
+<div class="modal-backdrop" id="itemBackdrop">
+  <div class="item-modal">
+    <div class="item-modal-img" id="itemModalImg">
+      <button class="item-modal-close" id="itemModalClose">✕</button>
+      <span id="itemModalEmoji">🍲</span>
+    </div>
+    <div class="item-modal-body">
+      <div class="price-badge" id="itemModalPrice">0 so'm</div>
+      <h3 id="itemModalName">—</h3>
+      <p class="desc" id="itemModalDesc">—</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-speak" id="btnSpeak" title="Eshitish">🔊</button>
+      <button class="btn-buy" id="btnBuy" data-i18n="buy">Sotib olish</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FIRST-VISIT INFO MODAL ===================== -->
+<div class="info-backdrop" id="infoBackdrop">
+  <div class="info-card">
+    <button class="info-close" id="infoClose">✕</button>
+    <div class="info-icon" id="infoIcon">👋</div>
+    <h3 id="infoTitle">—</h3>
+    <p id="infoText">—</p>
+    <div class="info-nav">
+      <button class="info-arrow" id="infoPrev">‹</button>
+      <div class="info-dots" id="infoDots"></div>
+      <button class="info-arrow" id="infoNext">›</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   ODAK: Bu ma'lumotlar (kategoriya, taom, narx, rasm, ma'lumot kartochkalari)
+   kelajakda ADMIN PANELI orqali tahrirlanadi. Hozircha demo uchun shu yerda
+   JS obyekt sifatida saqlangan — admin panel qurilganda bu joyga
+   localStorage / backend API ulanadi.
+   ========================================================================= */
+
+const I18N = {
+  uz:{
+    search_ph:"Qidirish: masalan «ichimliklar»",
+    hero_eyebrow:"Xush kelibsiz",
+    hero_title:"Bugun nima tanlaysiz?",
+    hero_sub:"QR kodni skaner qilib to'g'ridan-to'g'ri menyuga tushdingiz — buyurtma bering va zavqlaning.",
+    cat_title:"Menyu bo'limlari",
+    clear_all:"Barchasi",
+    items_title:"Barcha taomlar",
+    menu_title:"Menyu",
+    settings:"Sozlamalar",
+    chef_panel:"Oshpaz paneli",
+    chef_panel_sub:"Ovqat miqdorini boshqarish",
+    admin_panel:"Admin paneli",
+    admin_panel_sub:"To'liq boshqaruv",
+    dark_mode:"Tungi rejim",
+    voice_setting:"Ovozli o'qish",
+    pw_title:"Panelga kirish",
+    pw_sub:"Bu panel faqat xodimlar uchun. Iltimos, parolni kiriting.",
+    pw_ph:"Parol",
+    pw_error:"Parol noto'g'ri",
+    pw_submit:"Kirish",
+    buy:"Sotib olish",
+    bought:"Buyurtma qabul qilindi ✓",
+    no_results:"Hech narsa topilmadi",
+    stub_msg:"Bu panel alohida sahifa sifatida tayyorlanmoqda.",
+  },
+  ru:{
+    search_ph:"Поиск: например «напитки»",
+    hero_eyebrow:"Добро пожаловать",
+    hero_title:"Что выберете сегодня?",
+    hero_sub:"Вы отсканировали QR-код и попали прямо в меню — выбирайте и наслаждайтесь.",
+    cat_title:"Разделы меню",
+    clear_all:"Все",
+    items_title:"Все блюда",
+    menu_title:"Меню",
+    settings:"Настройки",
+    chef_panel:"Панель повара",
+    chef_panel_sub:"Управление количеством блюд",
+    admin_panel:"Панель администратора",
+    admin_panel_sub:"Полное управление",
+    dark_mode:"Тёмный режим",
+    voice_setting:"Голосовое чтение",
+    pw_title:"Вход в панель",
+    pw_sub:"Эта панель только для персонала. Введите пароль.",
+    pw_ph:"Пароль",
+    pw_error:"Неверный пароль",
+    pw_submit:"Войти",
+    buy:"Купить",
+    bought:"Заказ принят ✓",
+    no_results:"Ничего не найдено",
+    stub_msg:"Эта панель разрабатывается отдельно.",
+  },
+  en:{
+    search_ph:"Search: e.g. \"drinks\"",
+    hero_eyebrow:"Welcome",
+    hero_title:"What will it be today?",
+    hero_sub:"You scanned the QR code and landed right in the menu — order and enjoy.",
+    cat_title:"Menu sections",
+    clear_all:"All",
+    items_title:"All items",
+    menu_title:"Menu",
+    settings:"Settings",
+    chef_panel:"Chef panel",
+    chef_panel_sub:"Manage dish quantities",
+    admin_panel:"Admin panel",
+    admin_panel_sub:"Full control",
+    dark_mode:"Dark mode",
+    voice_setting:"Voice read-out",
+    pw_title:"Panel login",
+    pw_sub:"This panel is staff-only. Please enter the password.",
+    pw_ph:"Password",
+    pw_error:"Incorrect password",
+    pw_submit:"Enter",
+    buy:"Order",
+    bought:"Order placed ✓",
+    no_results:"Nothing found",
+    stub_msg:"This panel is being built separately.",
+  }
+};
+
+const CATEGORIES = [
+  {id:"taomlar",     icon:"🍲", name:{uz:"Taomlar",      ru:"Блюда",   en:"Main dishes"}},
+  {id:"ichimliklar", icon:"🥤", name:{uz:"Ichimliklar",  ru:"Напитки", en:"Drinks"}},
+  {id:"choylar",     icon:"🍵", name:{uz:"Choy va qahva",ru:"Чай/кофе",en:"Tea & coffee"}},
+  {id:"salatlar",    icon:"🥗", name:{uz:"Salatlar",     ru:"Салаты",  en:"Salads"}},
+  {id:"shirinlik",   icon:"🍰", name:{uz:"Shirinliklar", ru:"Десерты", en:"Desserts"}},
+  {id:"non",         icon:"🥖", name:{uz:"Non mahsulotlari",ru:"Выпечка",en:"Bakery"}},
+];
+
+const ITEMS = [
+  {id:1, cat:"taomlar", price:35000, emoji:"🍚",
+    name:{uz:"O'zbek oshi",ru:"Узбекский плов",en:"Uzbek Osh (Plov)"},
+    desc:{uz:"Zira va sabzi bilan pishirilgan an'anaviy Farg'ona oshi, qo'y go'shti bilan.",
+          ru:"Традиционный ферганский плов с зирой и морковью, на бараньем мясе.",
+          en:"Traditional Fergana-style plov with cumin and carrots, cooked with lamb."}},
+  {id:2, cat:"taomlar", price:28000, emoji:"🍜",
+    name:{uz:"Lag'mon",ru:"Лагман",en:"Lagman"},
+    desc:{uz:"Qo'lda tortilgan uzun xamir, sabzavot va go'sht sousi bilan.",
+          ru:"Домашняя вытянутая лапша с овощами и мясным соусом.",
+          en:"Hand-pulled noodles with vegetables and a savory meat sauce."}},
+  {id:3, cat:"taomlar", price:24000, emoji:"🥟",
+    name:{uz:"Manti",ru:"Манты",en:"Manti"},
+    desc:{uz:"Bug'da pishirilgan, qiyma go'sht va piyoz bilan to'ldirilgan xamir.",
+          ru:"Приготовленные на пару пельмени с начинкой из мяса и лука.",
+          en:"Steamed dumplings filled with seasoned minced meat and onion."}},
+  {id:4, cat:"ichimliklar", price:9000, emoji:"🥤",
+    name:{uz:"Kompot",ru:"Компот",en:"Compote"},
+    desc:{uz:"Mavsumiy mevalardan tayyorlangan sovuq shirin ichimlik.",
+          ru:"Прохладный сладкий напиток из сезонных фруктов.",
+          en:"Cool sweet drink made from seasonal fruit."}},
+  {id:5, cat:"ichimliklar", price:7000, emoji:"🧃",
+    name:{uz:"Ayron",ru:"Айран",en:"Ayran"},
+    desc:{uz:"Sho'rroq, tetiklantiruvchi sut mahsuloti ichimligi.",
+          ru:"Освежающий кисломолочный напиток с лёгкой солоноватостью.",
+          en:"Refreshing salty yoghurt-based drink."}},
+  {id:6, cat:"choylar", price:6000, emoji:"🍵",
+    name:{uz:"Ko'k choy",ru:"Зелёный чай",en:"Green tea"},
+    desc:{uz:"Choynakda dam olingan, mahalliy an'anaviy ko'k choy.",
+          ru:"Традиционный узбекский зелёный чай в чайнике.",
+          en:"Traditional pot-brewed green tea, served the local way."}},
+  {id:7, cat:"choylar", price:12000, emoji:"☕",
+    name:{uz:"Qora qahva",ru:"Чёрный кофе",en:"Black coffee"},
+    desc:{uz:"Yangi tayyorlangan qaynatilgan qahva.",
+          ru:"Свежесваренный чёрный кофе.",
+          en:"Freshly brewed black coffee."}},
+  {id:8, cat:"salatlar", price:15000, emoji:"🥗",
+    name:{uz:"Achchiq-chuchuk",ru:"Ачик-чучук",en:"Achichuk salad"},
+    desc:{uz:"Pomidor, piyoz va ko'katdan tayyorlangan yangi salat.",
+          ru:"Свежий салат из помидоров, лука и зелени.",
+          en:"Fresh salad of tomato, onion and herbs."}},
+  {id:9, cat:"shirinlik", price:14000, emoji:"🍰",
+    name:{uz:"Halva",ru:"Халва",en:"Halva"},
+    desc:{uz:"Yong'oq va shakar bilan tayyorlangan mahalliy shirinlik.",
+          ru:"Местная сладость из орехов и сахара.",
+          en:"Local sweet made with nuts and sugar."}},
+  {id:10, cat:"non", price:5000, emoji:"🥖",
+    name:{uz:"Patir non",ru:"Патыр (лепёшка)",en:"Patir bread"},
+    desc:{uz:"Tandirda pishirilgan an'anaviy o'zbek noni.",
+          ru:"Традиционная узбекская лепёшка из тандыра.",
+          en:"Traditional Uzbek flatbread baked in a tandoor."}},
+];
+
+const INFO_SLIDES = [
+  {icon:"👋", uz:{t:"Xush kelibsiz!", x:"Bu — bizning raqamli menyumiz. Yuqorida qidiruv orqali istalgan taomni toping, pastda esa bo'limlar bo'yicha ko'ring."},
+              ru:{t:"Добро пожаловать!", x:"Это наше цифровое меню. Ищите блюдо через поиск сверху или выберите раздел ниже."},
+              en:{t:"Welcome!", x:"This is our digital menu. Search for any dish above, or browse by section below."}},
+  {icon:"🔊", uz:{t:"Ovozli tavsif", x:"Har bir taom ustiga bosganingizda, tavsifni ovozda tinglashingiz mumkin — katta yozuv qiyin bo'lgan mehmonlar uchun qulay."},
+              ru:{t:"Голосовое описание", x:"Открыв блюдо, вы можете прослушать описание вслух — удобно для тех, кому сложно читать мелкий текст."},
+              en:{t:"Voice description", x:"Open any item and listen to its description read aloud — handy for guests who find small text hard to read."}},
+  {icon:"🛒", uz:{t:"Buyurtma berish", x:"Taom ichida narxni ko'rib, «Sotib olish» tugmasini bosing — buyurtmangiz ofitsiantga yetkaziladi."},
+              ru:{t:"Оформление заказа", x:"Посмотрите цену внутри карточки блюда и нажмите «Купить» — заказ будет передан официанту."},
+              en:{t:"Placing an order", x:"Check the price inside the item card and tap “Order” — your order will reach the waiter."}},
+];
+
+/* ------------------------------------------------------------------ */
+let state = {
+  lang: localStorage.getItem('oc_lang') || 'uz',
+  theme: localStorage.getItem('oc_theme') || 'light',
+  voiceOn: (localStorage.getItem('oc_voice') ?? 'on') === 'on',
+  activeCat: null,
+  currentSpeakId: null,
+};
+
+function t(key){ return (I18N[state.lang] && I18N[state.lang][key]) || I18N.uz[key] || key; }
+
+function applyI18n(){
+  document.documentElement.lang = state.lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    el.textContent = t(el.getAttribute('data-i18n'));
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    el.placeholder = t(el.getAttribute('data-i18n-ph'));
+  });
+  document.querySelectorAll('.lang-chip').forEach(el=>{
+    el.classList.toggle('active', el.dataset.lang === state.lang);
+  });
+  renderCategories();
+  renderItems();
+}
+
+function applyTheme(){
+  document.body.setAttribute('data-theme', state.theme);
+  document.getElementById('themeSwitch').classList.toggle('on', state.theme === 'dark');
+}
+
+function fmtPrice(n){ return n.toLocaleString('ru-RU').replace(/,/g,' ') + " so'm"; }
+
+/* ---------------- Categories ---------------- */
+function renderCategories(){
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = '';
+  CATEGORIES.forEach((c,i)=>{
+    const el = document.createElement('div');
+    el.className = 'cat-card' + (state.activeCat === c.id ? ' active' : '');
+    el.style.animationDelay = (i*0.05)+'s';
+    el.innerHTML = `<div class="icon-ring">${c.icon}</div><span class="name">${c.name[state.lang]}</span>`;
+    el.addEventListener('click', ()=>{
+      state.activeCat = (state.activeCat === c.id) ? null : c.id;
+      renderCategories();
+      renderItems();
+      document.getElementById('searchInput').value = '';
+    });
+    grid.appendChild(el);
+  });
+  document.getElementById('clearFilterBtn').classList.toggle('show', !!state.activeCat);
+}
+
+document.getElementById('clearFilterBtn').addEventListener('click', ()=>{
+  state.activeCat = null;
+  renderCategories();
+  renderItems();
+});
+
+/* ---------------- Items + search ---------------- */
+function renderItems(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  let list = ITEMS;
+
+  if (q){
+    // agar qidiruv matni kategoriya nomiga mos kelsa -> shu kategoriya bo'yicha filtr
+    const matchedCat = CATEGORIES.find(c => c.name[state.lang].toLowerCase().includes(q) || c.id.includes(q));
+    if (matchedCat){
+      list = ITEMS.filter(it => it.cat === matchedCat.id);
+      document.getElementById('itemsTitle').textContent = matchedCat.name[state.lang];
+    } else {
+      list = ITEMS.filter(it => it.name[state.lang].toLowerCase().includes(q) || it.desc[state.lang].toLowerCase().includes(q));
+      document.getElementById('itemsTitle').textContent = t('items_title');
+    }
+  } else if (state.activeCat){
+    list = ITEMS.filter(it => it.cat === state.activeCat);
+    const c = CATEGORIES.find(c=>c.id===state.activeCat);
+    document.getElementById('itemsTitle').textContent = c ? c.name[state.lang] : t('items_title');
+  } else {
+    document.getElementById('itemsTitle').textContent = t('items_title');
+  }
+
+  const grid = document.getElementById('itemsGrid');
+  grid.innerHTML = '';
+  if (list.length === 0){
+    grid.innerHTML = `<div class="no-results">🔍 ${t('no_results')}</div>`;
+    return;
+  }
+  list.forEach((it,i)=>{
+    const el = document.createElement('div');
+    el.className = 'item-card';
+    el.style.animationDelay = (i*0.06)+'s';
+    el.innerHTML = `
+      <div class="item-img">${it.emoji}</div>
+      <div class="item-body">
+        <p class="name">${it.name[state.lang]}</p>
+        <p class="price">${fmtPrice(it.price)}</p>
+      </div>`;
+    el.addEventListener('click', ()=> openItemModal(it));
+    grid.appendChild(el);
+  });
+}
+
+document.getElementById('searchInput').addEventListener('input', renderItems);
+
+/* ---------------- Item modal + voice + buy ---------------- */
+const itemBackdrop = document.getElementById('itemBackdrop');
+let currentUtterance = null;
+
+function openItemModal(it){
+  document.getElementById('itemModalEmoji').textContent = it.emoji;
+  document.getElementById('itemModalName').textContent = it.name[state.lang];
+  document.getElementById('itemModalDesc').textContent = it.desc[state.lang];
+  document.getElementById('itemModalPrice').textContent = fmtPrice(it.price);
+  const buyBtn = document.getElementById('btnBuy');
+  buyBtn.classList.remove('bought');
+  buyBtn.textContent = t('buy');
+  buyBtn.onclick = ()=>{
+    buyBtn.classList.add('bought');
+    buyBtn.textContent = t('bought');
+    showToast(`${it.name[state.lang]} — ${t('bought')}`);
+  };
+  const speakBtn = document.getElementById('btnSpeak');
+  speakBtn.classList.remove('speaking');
+  speakBtn.onclick = ()=> toggleSpeak(it);
+  itemBackdrop.classList.add('show');
+}
+function closeItemModal(){
+  itemBackdrop.classList.remove('show');
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  document.getElementById('btnSpeak').classList.remove('speaking');
+}
+document.getElementById('itemModalClose').addEventListener('click', closeItemModal);
+itemBackdrop.addEventListener('click', (e)=>{ if(e.target === itemBackdrop) closeItemModal(); });
+
+function toggleSpeak(it){
+  const speakBtn = document.getElementById('btnSpeak');
+  if (!('speechSynthesis' in window)){
+    showToast('Ovozli o\'qish qo\'llab-quvvatlanmaydi');
+    return;
+  }
+  if (speakBtn.classList.contains('speaking')){
+    window.speechSynthesis.cancel();
+    speakBtn.classList.remove('speaking');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const text = `${it.name[state.lang]}. ${it.desc[state.lang]}`;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = state.lang === 'ru' ? 'ru-RU' : state.lang === 'en' ? 'en-US' : 'ru-RU';
+  u.rate = 0.95;
+  u.onend = ()=> speakBtn.classList.remove('speaking');
+  u.onerror = ()=> speakBtn.classList.remove('speaking');
+  currentUtterance = u;
+  speakBtn.classList.add('speaking');
+  window.speechSynthesis.speak(u);
+}
+
+/* ---------------- Toast ---------------- */
+function showToast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(showToast._tm);
+  showToast._tm = setTimeout(()=> el.classList.remove('show'), 2400);
+}
+
+/* ---------------- Dropdown menu ---------------- */
+const dropdownPanel = document.getElementById('dropdownPanel');
+const overlay = document.getElementById('overlay');
+function openDropdown(){ dropdownPanel.classList.add('open'); overlay.classList.add('show'); }
+function closeDropdown(){ dropdownPanel.classList.remove('open'); overlay.classList.remove('show'); }
+document.getElementById('menuBtn').addEventListener('click', openDropdown);
+document.getElementById('ddClose').addEventListener('click', closeDropdown);
+overlay.addEventListener('click', ()=>{ closeDropdown(); closeSettings(); closePwModal(); });
+
+document.querySelectorAll('.lang-chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    state.lang = chip.dataset.lang;
+    localStorage.setItem('oc_lang', state.lang);
+    applyI18n();
+  });
+});
+
+/* ---------------- Settings modal ---------------- */
+const settingsBackdrop = document.getElementById('settingsBackdrop');
+document.getElementById('openSettings').addEventListener('click', ()=>{
+  closeDropdown();
+  settingsBackdrop.classList.add('show');
+});
+function closeSettings(){ settingsBackdrop.classList.remove('show'); }
+document.getElementById('settingsClose').addEventListener('click', closeSettings);
+settingsBackdrop.addEventListener('click', (e)=>{ if(e.target===settingsBackdrop) closeSettings(); });
+
+document.getElementById('themeSwitch').addEventListener('click', ()=>{
+  state.theme = state.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('oc_theme', state.theme);
+  applyTheme();
+});
+document.getElementById('voiceSwitch').addEventListener('click', function(){
+  state.voiceOn = !state.voiceOn;
+  localStorage.setItem('oc_voice', state.voiceOn ? 'on':'off');
+  this.classList.toggle('on', state.voiceOn);
+});
+
+/* ---------------- Password-gated stub panels (2 & 3) ---------------- */
+const PANEL_PASSWORDS = { chef: '1111', admin: '9999' }; // demo uchun — admin panelda o'zgartiriladi
+const pwBackdrop = document.getElementById('pwBackdrop');
+let pendingPanel = null;
+
+document.querySelectorAll('[data-panel]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    pendingPanel = btn.dataset.panel;
+    closeDropdown();
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwError').classList.remove('show');
+    pwBackdrop.classList.add('show');
+    setTimeout(()=>document.getElementById('pwInput').focus(),250);
+  });
+});
+function closePwModal(){ pwBackdrop.classList.remove('show'); pendingPanel = null; }
+document.getElementById('pwClose').addEventListener('click', closePwModal);
+document.getElementById('pwSubmit').addEventListener('click', submitPw);
+document.getElementById('pwInput').addEventListener('keydown', e=>{ if(e.key==='Enter') submitPw(); });
+
+function submitPw(){
+  const val = document.getElementById('pwInput').value;
+  if (pendingPanel && val === PANEL_PASSWORDS[pendingPanel]){
+    closePwModal();
+    showToast(t('stub_msg'));
+    // Bu yerga kelajakda: window.location.href = pendingPanel==='chef' ? 'panel2-oshpaz.html' : 'panel3-admin.html';
+  } else {
+    document.getElementById('pwError').classList.add('show');
+  }
+}
+
+/* ---------------- First-visit info modal ---------------- */
+const infoBackdrop = document.getElementById('infoBackdrop');
+let infoIdx = 0;
+function renderInfoSlide(){
+  const s = INFO_SLIDES[infoIdx];
+  document.getElementById('infoIcon').textContent = s.icon;
+  document.getElementById('infoTitle').textContent = s[state.lang].t;
+  document.getElementById('infoText').textContent = s[state.lang].x;
+  document.getElementById('infoPrev').disabled = infoIdx === 0;
+  document.getElementById('infoNext').textContent = infoIdx === INFO_SLIDES.length-1 ? '✓' : '›';
+  const dots = document.getElementById('infoDots');
+  dots.innerHTML = '';
+  INFO_SLIDES.forEach((_,i)=>{
+    const d = document.createElement('span');
+    if (i===infoIdx) d.classList.add('active');
+    dots.appendChild(d);
+  });
+}
+document.getElementById('infoPrev').addEventListener('click', ()=>{ if(infoIdx>0){infoIdx--; renderInfoSlide();} });
+document.getElementById('infoNext').addEventListener('click', ()=>{
+  if (infoIdx < INFO_SLIDES.length-1){ infoIdx++; renderInfoSlide(); }
+  else { closeInfoModal(); }
+});
+document.getElementById('infoClose').addEventListener('click', closeInfoModal);
+infoBackdrop.addEventListener('click', (e)=>{ if(e.target===infoBackdrop) closeInfoModal(); });
+function closeInfoModal(){ infoBackdrop.classList.remove('show'); }
+function openInfoModal(){ infoIdx = 0; renderInfoSlide(); infoBackdrop.classList.add('show'); }
+
+/* ---------------- init ---------------- */
+applyTheme();
+applyI18n();
+setTimeout(openInfoModal, 550); // birinchi kirishda ma'lumot kartochkasi
+</script>
+</body>
+</html>
