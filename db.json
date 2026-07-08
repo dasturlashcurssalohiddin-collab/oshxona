@@ -1,0 +1,185 @@
+{
+  "menu": [
+    {
+      "id": "1",
+      "name": "Chiroyli To'y Oshi",
+      "category": "Taomlar",
+      "description": "Zafar qora-kesma guruchidan, go'shtli va bedana tuxumlari solingan maxsus milliy palov.",
+      "price": 45000,
+      "image": "https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=500&auto=format&fit=crop&q=60",
+      "stock": 15,
+      "rating": 4.9,
+      "voiceText": "Chiroyli To'y Oshi. Narxi qirq besh ming so'm. Maxsus milliy palovimiz, go'shtli va bedana tuxumlari solingan mazali taom."
+    },
+    {
+      "id": "2",
+      "name": "Tandir Somsa",
+      "category": "Taomlar",
+      "description": "Qarsildoq xamirdan tandirda pishirilgan go'shtli va dumba yog'li an'anaviy somsa.",
+      "price": 12000,
+      "image": "https://images.unsplash.com/photo-1601050690597-df056fb4ce78?w=500&auto=format&fit=crop&q=60",
+      "stock": 40,
+      "rating": 4.8,
+      "voiceText": "Tandir Somsa. Narxi o'n ikki ming so'm. Tandirda yopilgan, qarsildoq go'shtli milliy somsa."
+    },
+    {
+      "id": "3",
+      "name": "Limonli Ko'k Choy",
+      "category": "Ichimliklar",
+      "description": "Sariq limon bo'laklari va toza shakar bilan tayyorlangan xushbo'y ko'k choy.",
+      "price": 8000,
+      "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500&auto=format&fit=crop&q=60",
+      "stock": 50,
+      "rating": 4.7,
+      "voiceText": "Limonli ko'k choy. Narxi sakkiz ming so'm. Yangi limon bo'laklari bilan damlangan xushbo'y ko'k choy."
+    },
+    {
+      "id": "4",
+      "name": "Klassik Manti",
+      "category": "Taomlar",
+      "description": "Yupqa xamir ichida maydalangan yangi mol go'shti va piyoz bilan bug'da pishirilgan lazzatli manti.",
+      "price": 7000,
+      "image": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500&auto=format&fit=crop&q=60",
+      "stock": 30,
+      "rating": 4.9,
+      "voiceText": "Klassik Manti. Narxi har biri yetti ming so'm. Bug'da pishirilgan, sershira mol go'shtli manti."
+    },
+    {
+      "id": "5",
+      "name": "Coca-Cola 0.5L",
+      "category": "Ichimliklar",
+      "description": "Muzdek salqin va tetiklashtiruvchi klassik gazli ichimlik.",
+      "price": 9000,
+      "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60",
+      "stock": 100,
+      "rating": 4.6,
+      "voiceText": "Koka kola yarim litr. Narxi to'qqiz ming so'm. Muzdek va tetiklashtiruvchi gazli ichimlik."
+    }
+  ],
+  "booklet": {
+    "active": true,
+    "title": "Oshxonamiz Yo'riqnomasi",
+    "pages": [
+      "Xush kelibsiz! Ushbu raqamli menyu orqali sevimli taomlaringiz bilan tanishing. Har bir yoshu qari uchun tushunarli va qulay qilib ishlangan.",
+      "Kategoriyalarni tanlash va qidiruv tizimidan foydalanishingiz mumkin. Har bir taom kartasini bossangiz, u haqidagi tafsilotlarni ovozli eshitishingiz mumkin!",
+      "Buyurtma berish uchun stolingizdagi afitsiantga taomlarni ayting. Afitsiant buyurtmalarni o'zi kiritadi va taom oshpaz tomonidan tayyorlanadi. Yoqimli ishtaha!"
+    ]
+  },
+  "config": {
+    "theme": "light",
+    "backgroundType": "color",
+    "backgroundValue": "#f3f4f6",
+    "foregroundColor": "#ffffff",
+    "logoUrl": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=200&auto=format&fit=crop&q=60",
+    "logoWidth": 100,
+    "effectsEnabled": true,
+    "activeLang": "uz"
+  },
+  "languages": ["uz", "ru", "en"],
+  "translations": {
+    "uz": {
+      "welcome": "Xush kelibsiz!",
+      "menu": "Menyu",
+      "categories": "Kategoriyalar",
+      "search": "Taom yoki toifa nomini yozing (masalan: ichimliklar)",
+      "settings": "Sozlamalar",
+      "staffPanel": "Oshpaz & Afitsiant",
+      "adminPanel": "Admin Panel",
+      "darkLight": "Tun/Kun",
+      "details": "Taom Haqida Ma'lumot",
+      "stock": "Mavjud",
+      "price": "Narxi",
+      "listen": "Ta'rifni Ovozli Eshitish 🔊",
+      "exchange": "🖊️ O'zgartirish",
+      "add": "Yangi Taom Qo'shish",
+      "delete": "O'chirish",
+      "save": "Saqlash",
+      "stats": "Statistika va Tahlil",
+      "logs": "Harakatlar jurnali",
+      "visitorStats": "Tashrif buyuruvchilar",
+      "adSpace": "Reklama Banneri",
+      "password": "Parol",
+      "enter": "Kirish",
+      "backToMenu": "Menyuga qaytish",
+      "close": "Yopish"
+    },
+    "ru": {
+      "welcome": "Добро пожаловать!",
+      "menu": "Меню",
+      "categories": "Категории",
+      "search": "Введите блюдо или категорию (например: напитки)",
+      "settings": "Настройки",
+      "staffPanel": "Повар и Официант",
+      "adminPanel": "Панель Администратора",
+      "darkLight": "Ночь/День",
+      "details": "Информация о блюде",
+      "stock": "В наличии",
+      "price": "Цена",
+      "listen": "Прослушать аудио 🔊",
+      "exchange": "🖊️ Изменить",
+      "add": "Добавить блюдо",
+      "delete": "Удалить",
+      "save": "Сохранить",
+      "stats": "Статистика и Анализ",
+      "logs": "Журнал действий",
+      "visitorStats": "Посетители",
+      "adSpace": "Рекламный баннер",
+      "password": "Пароль",
+      "enter": "Войти",
+      "backToMenu": "Назад в меню",
+      "close": "Закрыть"
+    },
+    "en": {
+      "welcome": "Welcome!",
+      "menu": "Menu",
+      "categories": "Categories",
+      "search": "Type dish or category name (e.g. drinks)",
+      "settings": "Settings",
+      "staffPanel": "Chef & Waiter Panel",
+      "adminPanel": "Admin Control Panel",
+      "darkLight": "Night/Day",
+      "details": "Dish Details",
+      "stock": "Stock Available",
+      "price": "Price",
+      "listen": "Listen to Description 🔊",
+      "exchange": "🖊️ Exchange",
+      "add": "Add New Dish",
+      "delete": "Delete",
+      "save": "Save Changes",
+      "stats": "Analytics & Statistics",
+      "logs": "Action Logs",
+      "visitorStats": "Visitors Summary",
+      "adSpace": "Ad Banner",
+      "password": "Password",
+      "enter": "Enter",
+      "backToMenu": "Back to Menu",
+      "close": "Close"
+    }
+  },
+  "stats": {
+    "totalVisits": 348,
+    "activeUsers": 12,
+    "hourlyVisits": [15, 24, 18, 22, 35, 48, 52, 45, 38, 30, 25, 21],
+    "dailyVisits": [220, 250, 180, 310, 290, 340, 348],
+    "monthlyVisits": [1200, 1500, 1800, 2200, 2400, 3100],
+    "yearlyVisits": [15000, 24000, 38000],
+    "ordersLog": [
+      { "id": "1", "time": "14:01", "action": "Taomlar: Tandir Somsa zaxirasi 40 dan 39 ga kamaytirildi (Afitsiant stol #5 buyurtmasi)" },
+      { "id": "2", "time": "13:45", "action": "Ichimliklar: Limonli Ko'k Choy zaxirasi 49 dan 50 ga ko'paytirildi (Oshpaz tayyorladi)" }
+    ],
+    "visitsLog": [
+      { "time": "14:02", "type": "Kirish", "user": "Mehmon (Mobil)" },
+      { "time": "13:58", "type": "Kirish", "user": "Mehmon (Stol #4)" }
+    ]
+  },
+  "ads": [
+    {
+      "id": "1",
+      "active": true,
+      "position": "bottom",
+      "type": "image",
+      "contentUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1000&auto=format&fit=crop&q=60",
+      "linkUrl": "https://google.com"
+    }
+  ]
+}
