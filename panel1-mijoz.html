@@ -2,770 +2,797 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
-<title>Oshxona Menyu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+<title>Oshxona — Menyu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ==========================================================================
-   ADMIN PANEL ORQALI O'ZGARTIRILADIGAN QIYMATLAR (hozircha qo'lda kiritilgan)
-   Kelajakda admin panel shu CSS o'zgaruvchilarini (logo o'lchami va h.k.)
-   dinamik ravishda yozib turadi.
-   ========================================================================== */
-:root{
-  --logo-size: 46px;              /* Admin panelda logotip o'lchamini shu yerdan boshqarish mumkin */
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 22px;
+  :root{
+    --cobalt:#1E4F6B;
+    --cobalt-deep:#123246;
+    --teal:#2E8C8A;
+    --teal-light:#DCEFEE;
+    --gold:#E3A73E;
+    --gold-deep:#C98A22;
+    --clay:#B75B3A;
+    --cream:#FBF6EC;
+    --cream-dim:#F1EADA;
+    --ink:#202623;
+    --ink-soft:#4B5450;
+    --line: rgba(32,38,35,0.12);
+    --radius-lg: 22px;
+    --radius-md: 14px;
+    --radius-sm: 9px;
+    --shadow-card: 0 6px 20px rgba(18,50,70,0.10);
+    --shadow-modal: 0 20px 60px rgba(18,50,70,0.35);
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Manrope', sans-serif;
+    --logo-size: 40px;
+    --fs-scale: 1;
+    --bg: var(--cream);
+    --bg-panel: #ffffff;
+    --text: var(--ink);
+    --text-soft: var(--ink-soft);
+    --header-bg: rgba(251,246,236,0.92);
+  }
+  [data-theme="dark"]{
+    --bg:#12201E;
+    --bg-panel:#17302D;
+    --text:#EFEAE0;
+    --text-soft:#B9C2BE;
+    --line: rgba(239,234,224,0.12);
+    --header-bg: rgba(18,32,30,0.92);
+    --cream-dim:#1D3733;
+    --shadow-card: 0 6px 20px rgba(0,0,0,0.35);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    font-size:calc(16px * var(--fs-scale));
+    line-height:1.5;
+    transition:background .3s ease, color .3s ease;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+  button{font-family:inherit; cursor:pointer;}
+  input{font-family:inherit;}
+  a{color:inherit;}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
 
-  --font-display: 'Fraunces', serif;
-  --font-body: 'Manrope', sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
+  /* ---------- HEADER ---------- */
+  header.top{
+    position:sticky; top:0; z-index:40;
+    background:var(--header-bg);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:10px 14px;
+  }
+  .top-row{
+    display:flex; align-items:center; gap:10px; max-width:1080px; margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px; flex-shrink:0; min-width:0;
+    background:none; border:none; padding:0; color:inherit;
+  }
+  .brand img{ height:var(--logo-size); width:auto; display:block; border-radius:8px;}
+  .brand .logo-mark{
+    height:var(--logo-size); width:var(--logo-size);
+    border-radius:10px;
+    background:linear-gradient(145deg,var(--cobalt),var(--teal));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:var(--font-display); font-weight:700;
+    font-size:calc(var(--logo-size) * 0.42);
+    flex-shrink:0;
+  }
+  .brand .site-name{
+    font-family:var(--font-display); font-weight:600;
+    font-size:1.15rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    max-width:38vw;
+  }
+  .search-wrap{
+    flex:1; position:relative; min-width:0;
+  }
+  .search-wrap input{
+    width:100%; padding:11px 42px 11px 16px;
+    border-radius:999px; border:1.5px solid var(--line);
+    background:var(--bg-panel); color:var(--text);
+    font-size:0.95rem; outline:none;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .search-wrap input:focus{ border-color:var(--teal); box-shadow:0 0 0 3px rgba(46,140,138,0.18); }
+  .search-wrap svg{
+    position:absolute; right:14px; top:50%; transform:translateY(-50%);
+    width:18px; height:18px; opacity:0.55; pointer-events:none;
+  }
+  .lang-select{
+    border:1.5px solid var(--line); background:var(--bg-panel); color:var(--text);
+    border-radius:999px; padding:9px 12px; font-size:0.85rem; font-weight:700;
+    flex-shrink:0;
+  }
+  .menu-btn{
+    background:var(--bg-panel); border:1.5px solid var(--line); border-radius:12px;
+    width:42px; height:42px; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; position:relative;
+  }
+  .menu-btn svg{width:20px; height:20px;}
 
-  /* ---- LIGHT (kunduzgi) mavzu ---- */
-  --bg: #FBF7EF;
-  --surface: #FFFFFF;
-  --surface-2: #F4EDDC;
-  --text: #26231D;
-  --muted: #6E6858;
-  --border: #E8DEC8;
-  --accent: #B5541B;      /* taomlar — mis/paprika */
-  --accent-2: #1F6F5C;    /* ichimliklar — chuqur tiniq yashil */
-  --gold: #C98A2C;
-  --shadow: 0 10px 30px -12px rgba(38,35,29,0.18);
-}
+  /* dropdown menu */
+  .dropdown{
+    position:absolute; top:calc(100% + 8px); right:14px; z-index:50;
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius-md);
+    box-shadow:var(--shadow-card); min-width:220px; overflow:hidden;
+    opacity:0; transform:translateY(-6px) scale(0.98); pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  .dropdown.open{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+  .dropdown button{
+    display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+    padding:13px 16px; background:none; border:none; color:var(--text);
+    font-size:0.92rem; font-weight:600; border-bottom:1px solid var(--line);
+  }
+  .dropdown button:last-child{border-bottom:none;}
+  .dropdown button:hover{background:var(--cream-dim);}
+  .dropdown .lock{margin-left:auto; opacity:0.45; font-size:0.8rem;}
 
-[data-theme="dark"]{
-  --bg: #17140F;
-  --surface: #221E17;
-  --surface-2: #2B261D;
-  --text: #F3ECDD;
-  --muted: #B7AC93;
-  --border: #3A3427;
-  --accent: #E08A44;
-  --accent-2: #45B097;
-  --gold: #E8BE63;
-  --shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-}
+  /* ---------- CATEGORY PILLS ---------- */
+  .cat-row{
+    max-width:1080px; margin:0 auto; padding:14px 14px 4px;
+    display:flex; gap:8px; overflow-x:auto; scrollbar-width:none;
+  }
+  .cat-row::-webkit-scrollbar{display:none;}
+  .cat-pill{
+    flex-shrink:0; padding:9px 18px; border-radius:999px; border:1.5px solid var(--line);
+    background:var(--bg-panel); color:var(--text-soft); font-weight:700; font-size:0.88rem;
+    transition:all .18s ease; white-space:nowrap;
+  }
+  .cat-pill.active{ background:var(--cobalt); border-color:var(--cobalt); color:#fff; }
+  .cat-pill:hover:not(.active){ border-color:var(--teal); color:var(--teal); }
 
-*{box-sizing:border-box; margin:0; padding:0;}
-html{scroll-behavior:smooth;}
-body{
-  font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--text);
-  transition: background .35s ease, color .35s ease;
-  min-height:100vh;
-  padding-bottom: 60px;
-}
+  /* ---------- GRID ---------- */
+  main{ max-width:1080px; margin:0 auto; padding:18px 14px 60px; }
+  .section-title{
+    font-family:var(--font-display); font-size:1.5rem; font-weight:600; margin:18px 4px 12px;
+  }
+  .empty-state{
+    text-align:center; padding:60px 20px; color:var(--text-soft);
+  }
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); gap:14px;
+  }
+  .card{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius-lg);
+    overflow:hidden; text-align:left; padding:0; color:inherit;
+    box-shadow:var(--shadow-card);
+    opacity:0; transform:translateY(16px);
+    animation:cardIn .5s cubic-bezier(.2,.8,.2,1) forwards;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{ transform:translateY(-4px); box-shadow:0 14px 30px rgba(18,50,70,0.16); }
+  @keyframes cardIn{ to{ opacity:1; transform:translateY(0);} }
+  .card .thumb{
+    aspect-ratio:1/0.85; width:100%; position:relative; overflow:hidden;
+    background:linear-gradient(135deg,var(--teal-light),var(--cream-dim));
+    display:flex; align-items:center; justify-content:center;
+  }
+  .card .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .card .thumb svg{ width:46%; height:46%; color:var(--cobalt); opacity:0.55; }
+  .card .price-badge{
+    position:absolute; top:8px; right:8px; background:var(--gold);
+    color:#2b1f06; font-weight:800; font-size:0.78rem; padding:5px 10px; border-radius:999px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.15);
+  }
+  .card .info{ padding:12px 13px 14px; }
+  .card .name{ font-family:var(--font-display); font-weight:600; font-size:1.02rem; margin:0 0 3px; }
+  .card .cat-label{ font-size:0.76rem; color:var(--text-soft); font-weight:700; text-transform:uppercase; letter-spacing:0.03em; }
 
-/* -------------------- ikat naqsh — imzo detal -------------------- */
-.ikat-divider{
-  height: 14px;
-  width:100%;
-  background-image: repeating-linear-gradient(
-    115deg,
-    var(--gold) 0 10px,
-    transparent 10px 22px
-  );
-  opacity:.55;
-  mask-image: linear-gradient(180deg,#000 60%, transparent);
-}
+  /* ---------- DETAIL MODAL ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(15,25,23,0.55); z-index:100;
+    display:flex; align-items:flex-end; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity .25s ease;
+  }
+  .overlay.open{ opacity:1; pointer-events:auto; }
+  @media (min-width:640px){ .overlay{ align-items:center; } }
+  .detail-sheet{
+    background:var(--bg-panel); width:100%; max-width:520px; max-height:88vh; overflow-y:auto;
+    border-radius:24px 24px 0 0; box-shadow:var(--shadow-modal);
+    transform:translateY(30px); transition:transform .3s cubic-bezier(.2,.8,.2,1);
+  }
+  @media (min-width:640px){ .detail-sheet{ border-radius:24px; transform:scale(0.94) translateY(0); } }
+  .overlay.open .detail-sheet{ transform:translateY(0) scale(1); }
+  .detail-sheet .dimg{
+    width:100%; aspect-ratio:16/10; background:linear-gradient(135deg,var(--teal-light),var(--cream-dim));
+    display:flex; align-items:center; justify-content:center; position:relative;
+  }
+  .detail-sheet .dimg img{ width:100%; height:100%; object-fit:cover; }
+  .detail-sheet .dimg svg{ width:34%; height:34%; color:var(--cobalt); opacity:0.5; }
+  .detail-close{
+    position:absolute; top:12px; right:12px; width:36px; height:36px; border-radius:50%;
+    background:rgba(0,0,0,0.45); color:#fff; border:none; display:flex; align-items:center; justify-content:center;
+  }
+  .detail-body{ padding:20px 22px 26px; }
+  .detail-price{
+    display:inline-block; background:var(--gold); color:#2b1f06; font-weight:800;
+    padding:6px 14px; border-radius:999px; font-size:0.95rem; margin-bottom:10px;
+  }
+  .detail-name{ font-family:var(--font-display); font-size:1.5rem; font-weight:600; margin:2px 0 8px; }
+  .detail-desc{ color:var(--text-soft); font-size:0.98rem; line-height:1.6; margin-bottom:16px; }
+  .voice-btn{
+    display:inline-flex; align-items:center; gap:9px; background:var(--cobalt); color:#fff;
+    border:none; padding:11px 18px; border-radius:999px; font-weight:700; font-size:0.9rem;
+  }
+  .voice-btn svg{ width:18px; height:18px; }
+  .voice-btn.speaking{ background:var(--teal); }
 
-/* -------------------- HEADER -------------------- */
-header.top{
-  position:sticky; top:0; z-index:40;
-  background: var(--surface);
-  border-bottom:1px solid var(--border);
-  padding: 14px clamp(14px, 4vw, 40px);
-}
-.top-row{
-  display:flex; align-items:center; gap:16px; max-width:1180px; margin:0 auto;
-}
-.logo-wrap{
-  width: var(--logo-size); height: var(--logo-size);
-  flex:0 0 auto; border-radius: 50%;
-  display:flex; align-items:center; justify-content:center;
-  background: linear-gradient(145deg, var(--accent), var(--gold));
-  color:#fff; font-family:var(--font-display); font-weight:700;
-  box-shadow: var(--shadow);
-}
-.logo-wrap svg{width:62%; height:62%;}
+  /* ---------- INFO NOTE (signature element) ---------- */
+  .note-overlay{
+    position:fixed; inset:0; background:rgba(15,25,23,0.6); z-index:120;
+    display:flex; align-items:center; justify-content:center; padding:20px;
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .note-overlay.open{ opacity:1; pointer-events:auto; }
+  .note-card{
+    position:relative; width:100%; max-width:380px; background:var(--cream);
+    color:#2b2620;
+    border-radius:18px; padding:30px 26px 26px;
+    box-shadow:var(--shadow-modal);
+    transform:rotate(-1.2deg) scale(0.9); opacity:0;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1), opacity .3s ease;
+    background-image:
+      repeating-linear-gradient(to bottom, transparent, transparent 27px, rgba(30,79,107,0.07) 28px);
+  }
+  .note-overlay.open .note-card{ transform:rotate(0deg) scale(1); opacity:1; }
+  .note-card::before{
+    content:""; position:absolute; inset:8px; border-radius:12px;
+    border:2px dashed rgba(30,79,107,0.35); pointer-events:none;
+  }
+  .note-close{
+    position:absolute; top:10px; right:10px; width:32px; height:32px; border-radius:50%;
+    background:rgba(30,79,107,0.1); border:none; display:flex; align-items:center; justify-content:center;
+    color:var(--cobalt); font-size:1.1rem; font-weight:700;
+  }
+  .note-eyebrow{ font-size:0.72rem; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal); margin-bottom:8px;}
+  .note-title{ font-family:var(--font-display); font-size:1.35rem; font-weight:600; margin:0 0 10px; }
+  .note-text{ font-size:0.95rem; line-height:1.65; color:#3c352c; min-height:90px; }
+  .note-nav{ display:flex; align-items:center; justify-content:space-between; margin-top:18px; }
+  .note-nav-btn{
+    width:38px; height:38px; border-radius:50%; border:1.5px solid rgba(30,79,107,0.3);
+    background:none; display:flex; align-items:center; justify-content:center; color:var(--cobalt);
+  }
+  .note-nav-btn:disabled{ opacity:0.25; }
+  .note-dots{ display:flex; gap:6px; }
+  .note-dot{ width:6px; height:6px; border-radius:50%; background:rgba(30,79,107,0.25); }
+  .note-dot.active{ background:var(--cobalt); width:16px; border-radius:3px; transition:all .2s ease;}
 
-.search-wrap{
-  flex:1 1 auto; position:relative; height: var(--logo-size);
-}
-.search-wrap input{
-  width:100%; height:100%;
-  border-radius: 999px;
-  border:1.5px solid var(--border);
-  background: var(--surface-2);
-  color: var(--text);
-  padding: 0 20px 0 46px;
-  font-family: var(--font-body);
-  font-size: 16px;
-  outline:none;
-  transition: border-color .2s ease, box-shadow .2s ease;
-}
-.search-wrap input:focus{border-color: var(--accent); box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);}
-.search-wrap svg{
-  position:absolute; left:16px; top:50%; transform:translateY(-50%);
-  width:20px; height:20px; color:var(--muted); pointer-events:none;
-}
+  /* ---------- SETTINGS PANEL ---------- */
+  .settings-body{ padding:6px 4px 10px; }
+  .set-row{
+    display:flex; align-items:center; justify-content:space-between; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .set-row:last-child{ border-bottom:none; }
+  .set-label{ font-weight:700; font-size:0.95rem; }
+  .set-sub{ font-size:0.78rem; color:var(--text-soft); margin-top:2px; }
+  .toggle{
+    width:50px; height:28px; border-radius:999px; background:var(--line); position:relative;
+    border:none; flex-shrink:0;
+  }
+  .toggle::after{
+    content:""; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%;
+    background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.2); transition:transform .2s ease;
+  }
+  .toggle.on{ background:var(--cobalt); }
+  .toggle.on::after{ transform:translateX(22px); }
+  .fs-btns{ display:flex; gap:6px; }
+  .fs-btns button{
+    width:34px; height:34px; border-radius:9px; border:1.5px solid var(--line); background:var(--bg-panel);
+    color:var(--text); font-weight:700;
+  }
+  .fs-btns button.active{ background:var(--cobalt); border-color:var(--cobalt); color:#fff; }
 
-.icon-btn{
-  width:44px; height:44px; border-radius:50%;
-  border:1.5px solid var(--border); background:var(--surface-2);
-  display:flex; align-items:center; justify-content:center;
-  color:var(--text); cursor:pointer; flex:0 0 auto;
-  transition: transform .15s ease, background .2s ease;
-}
-.icon-btn:hover{ transform:translateY(-2px); background:var(--border); }
-.icon-btn svg{width:20px;height:20px;}
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--ink); color:#fff; padding:12px 20px; border-radius:999px; font-size:0.88rem;
+    font-weight:600; z-index:200; opacity:0; transition:all .25s ease; pointer-events:none;
+    max-width:88vw; text-align:center;
+  }
+  [data-theme="dark"] .toast{ background:#EFEAE0; color:#12201E; }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
-.menu-pop{ position:relative; }
-.menu-panel{
-  position:absolute; right:0; top:calc(100% + 10px);
-  background:var(--surface); border:1px solid var(--border);
-  border-radius: var(--radius-md); box-shadow: var(--shadow);
-  min-width: 240px; padding:10px; display:none; z-index:50;
-}
-.menu-panel.open{display:block;}
-.menu-panel .grp-label{
-  font-size:11px; letter-spacing:.08em; text-transform:uppercase;
-  color:var(--muted); padding:8px 10px 4px;
-}
-.menu-item-row{
-  display:flex; align-items:center; justify-content:space-between; gap:10px;
-  padding:10px 10px; border-radius:10px; cursor:pointer; font-size:15px;
-}
-.menu-item-row:hover{ background:var(--surface-2); }
-.menu-item-row .lock{width:16px;height:16px;color:var(--muted);}
-.lang-select{
-  border:none; background:transparent; color:var(--text);
-  font-family:var(--font-body); font-size:14px; padding:8px 10px;
-  border-radius:10px; cursor:pointer;
-}
-.lang-select:hover{background:var(--surface-2);}
-.theme-toggle-row{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:10px 10px; font-size:15px;
-}
-.switch{
-  width:42px; height:24px; border-radius:999px; background:var(--border);
-  position:relative; cursor:pointer; flex:0 0 auto;
-}
-.switch::after{
-  content:''; position:absolute; width:18px; height:18px; border-radius:50%;
-  background:#fff; top:3px; left:3px; transition:left .2s ease;
-  box-shadow:0 1px 3px rgba(0,0,0,.3);
-}
-[data-theme="dark"] .switch::after{ left:21px; }
-[data-theme="dark"] .switch{ background: var(--accent); }
-
-/* -------------------- CATEGORY CHIPS -------------------- */
-.cats{
-  max-width:1180px; margin: 18px auto 0; padding: 0 clamp(14px,4vw,40px);
-  display:flex; gap:10px; overflow-x:auto; scrollbar-width:none;
-}
-.cats::-webkit-scrollbar{display:none;}
-.chip{
-  flex:0 0 auto; padding:10px 18px; border-radius:999px;
-  border:1.5px solid var(--border); background:var(--surface);
-  font-size:14.5px; font-weight:600; color:var(--muted); cursor:pointer;
-  transition: all .2s ease; white-space:nowrap;
-}
-.chip.active{
-  background: var(--accent); border-color:var(--accent); color:#fff;
-}
-.chip[data-cat="ichimliklar"].active{ background:var(--accent-2); border-color:var(--accent-2); }
-
-/* -------------------- MENU GRID -------------------- */
-main{ max-width:1180px; margin: 22px auto 0; padding: 0 clamp(14px,4vw,40px); }
-.section-title{
-  font-family:var(--font-display); font-size: clamp(24px,3vw,32px);
-  font-weight:600; margin: 26px 0 14px;
-}
-.grid{
-  display:grid; gap:18px;
-  grid-template-columns: repeat(auto-fill, minmax(230px,1fr));
-}
-.card{
-  background:var(--surface); border:1px solid var(--border);
-  border-radius: var(--radius-lg); overflow:hidden; cursor:pointer;
-  box-shadow: var(--shadow);
-  opacity:0; transform: translateY(18px);
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-.card.in{ animation: riseIn .55s cubic-bezier(.2,.8,.2,1) forwards; }
-@keyframes riseIn{ to{ opacity:1; transform:translateY(0);} }
-.card:hover{ transform: translateY(-4px); box-shadow: 0 16px 34px -14px rgba(0,0,0,.28); }
-
-.card .photo{
-  height:150px; position:relative; overflow:hidden;
-  background: linear-gradient(135deg, var(--surface-2), var(--border));
-  display:flex; align-items:center; justify-content:center;
-}
-.card .photo img{width:100%; height:100%; object-fit:cover; display:block;}
-.card .photo .ph-icon{ width:38px; height:38px; color:var(--muted); opacity:.6; }
-.steam{position:absolute; bottom:8px; left:50%; width:3px; height:22px;
-  background:linear-gradient(180deg, transparent, rgba(255,255,255,.55));
-  border-radius:3px; opacity:0; filter:blur(1px);}
-.card:hover .steam{ animation: steamRise 1.4s ease-in-out infinite; }
-.steam.s2{ left:calc(50% + 10px); animation-delay:.2s;}
-.steam.s3{ left:calc(50% - 10px); animation-delay:.4s;}
-@keyframes steamRise{
-  0%{ opacity:0; transform: translateY(0) scaleY(.6);}
-  30%{ opacity:.7;}
-  100%{ opacity:0; transform: translateY(-26px) scaleY(1.2);}
-}
-.card .info{ padding:14px 16px 16px; }
-.card .name{ font-family:var(--font-display); font-size:18px; font-weight:600; margin-bottom:4px;}
-.card .desc{ font-size:13.5px; color:var(--muted); line-height:1.4;
-  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:36px;}
-.card .price{
-  margin-top:10px; font-family:var(--font-mono); font-weight:600; font-size:15px; color:var(--accent);
-}
-.card[data-cat="ichimliklar"] .price{ color:var(--accent-2); }
-
-.empty-state{
-  text-align:center; padding: 60px 20px; color:var(--muted);
-}
-.empty-state svg{width:46px;height:46px; margin-bottom:12px; opacity:.5;}
-
-/* -------------------- MODAL: birinchi kirishdagi ma'lumot (taxtacha) -------------------- */
-.overlay{
-  position:fixed; inset:0; background:rgba(20,17,12,.5);
-  display:none; align-items:center; justify-content:center; z-index:100; padding:20px;
-  backdrop-filter: blur(2px);
-}
-.overlay.open{ display:flex; }
-
-.info-board{
-  width:min(420px, 100%); background: var(--surface);
-  border-radius: var(--radius-lg); box-shadow: var(--shadow);
-  position:relative; padding: 30px 26px 26px;
-  border: 1px solid var(--border);
-  animation: boardIn .35s cubic-bezier(.2,.8,.2,1);
-}
-@keyframes boardIn{ from{opacity:0; transform:scale(.92) translateY(10px);} to{opacity:1; transform:scale(1) translateY(0);} }
-.info-board::before{
-  content:''; position:absolute; top:-10px; left:50%; transform:translateX(-50%);
-  width:54px; height:8px; border-radius:6px; background: var(--gold); opacity:.7;
-}
-.close-x{
-  position:absolute; top:14px; right:14px; width:34px; height:34px; border-radius:50%;
-  border:none; background:var(--surface-2); cursor:pointer;
-  display:flex; align-items:center; justify-content:center; color:var(--text);
-}
-.info-board .eyebrow{
-  font-family:var(--font-mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--gold); margin-bottom:8px;
-}
-.info-board h3{ font-family:var(--font-display); font-size:22px; margin-bottom:10px; padding-right:20px;}
-.info-board p{ color:var(--muted); font-size:15px; line-height:1.6; min-height:80px;}
-.board-nav{
-  display:flex; align-items:center; justify-content:space-between; margin-top:22px;
-}
-.nav-btn{
-  width:38px; height:38px; border-radius:50%; border:1.5px solid var(--border);
-  background:var(--surface-2); cursor:pointer; display:flex; align-items:center; justify-content:center;
-}
-.nav-btn:disabled{ opacity:.35; cursor:default; }
-.dots{ display:flex; gap:6px; }
-.dot{ width:7px; height:7px; border-radius:50%; background:var(--border); }
-.dot.active{ background:var(--accent); width:18px; border-radius:4px; transition:all .2s ease;}
-
-/* -------------------- MODAL: taom haqida -------------------- */
-.detail-sheet{
-  width:min(480px, 100%); max-height:88vh; overflow:auto;
-  background: var(--surface); border-radius: var(--radius-lg);
-  box-shadow: var(--shadow); position:relative; border:1px solid var(--border);
-  animation: boardIn .3s ease;
-}
-.detail-sheet .photo{
-  height:220px; background:linear-gradient(135deg, var(--surface-2), var(--border));
-  display:flex; align-items:center; justify-content:center; position:relative;
-}
-.detail-sheet .photo img{width:100%;height:100%;object-fit:cover;}
-.detail-sheet .photo .ph-icon{ width:54px; height:54px; color:var(--muted); opacity:.6;}
-.detail-body{ padding:22px 24px 26px; }
-.detail-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
-.detail-body h2{ font-family:var(--font-display); font-size:26px; font-weight:600; }
-.detail-price{ font-family:var(--font-mono); font-weight:700; font-size:19px; color:var(--accent); white-space:nowrap;}
-.detail-sheet[data-cat="ichimliklar"] .detail-price{ color:var(--accent-2); }
-.detail-desc{ color:var(--muted); line-height:1.65; margin-top:12px; font-size:15.5px;}
-.voice-row{
-  margin-top:18px; display:flex; align-items:center; gap:10px;
-}
-.voice-btn{
-  display:flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px;
-  border:1.5px solid var(--accent); background:transparent; color:var(--accent);
-  font-family:var(--font-body); font-weight:600; font-size:14px; cursor:pointer;
-  transition: background .2s ease, color .2s ease;
-}
-.voice-btn:hover{ background:var(--accent); color:#fff; }
-.voice-btn svg{width:18px;height:18px;}
-.voice-btn.speaking{ background:var(--accent); color:#fff; }
-
-/* -------------------- Parol darvozasi (2/3-panel) -------------------- */
-.gate-box{
-  width:min(340px,100%); background:var(--surface); border-radius:var(--radius-lg);
-  border:1px solid var(--border); box-shadow:var(--shadow); padding:26px; text-align:center;
-}
-.gate-box .g-icon{ width:40px; height:40px; margin:0 auto 12px; color:var(--gold);}
-.gate-box h3{ font-family:var(--font-display); font-size:20px; margin-bottom:6px;}
-.gate-box p{ color:var(--muted); font-size:14px; margin-bottom:16px; line-height:1.5;}
-.gate-box input{
-  width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid var(--border);
-  background:var(--surface-2); color:var(--text); font-size:15px; margin-bottom:12px; outline:none;
-}
-.gate-box input:focus{border-color:var(--accent);}
-.gate-btn{
-  width:100%; padding:12px; border-radius:10px; border:none; background:var(--accent);
-  color:#fff; font-weight:700; font-size:15px; cursor:pointer;
-}
-.gate-msg{ font-size:13px; color:var(--muted); margin-top:10px; }
-
-@media (prefers-reduced-motion: reduce){
-  *{animation-duration:.01ms !important; transition-duration:.01ms !important;}
-}
+  .info-fab{
+    position:fixed; bottom:20px; right:16px; z-index:30;
+    width:48px; height:48px; border-radius:50%; background:var(--cobalt); color:#fff;
+    border:none; box-shadow:0 8px 20px rgba(18,50,70,0.35); display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:1.1rem;
+  }
 </style>
 </head>
 <body>
 
-<!-- =========================================================
-     1-PANEL — MIJOZ UCHUN SAHIFA
-     ========================================================= -->
 <header class="top">
   <div class="top-row">
-    <!-- Admin panel orqali shu joyga haqiqiy logotip rasmi qo'yiladi -->
-    <div class="logo-wrap" id="logoWrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3v18M4 3c4 0 4 3 8 3s4-3 8-3M4 10c4 0 4 3 8 3s4-3 8-3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-
+    <button class="brand" id="brandBtn" aria-label="Bosh sahifa">
+      <span id="logoSlot"><span class="logo-mark" id="logoMark">O</span></span>
+      <span class="site-name" id="siteName">Oshxona</span>
+    </button>
     <div class="search-wrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
-      <input id="searchInput" type="text" data-i18n-ph="search_ph" placeholder="Qidirish… masalan: ichimliklar">
+      <input type="text" id="searchInput" placeholder="Qidiruv..." aria-label="Menyudan qidirish">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
     </div>
-
-    <div class="menu-pop">
-      <button class="icon-btn" id="infoReopenBtn" title="Ma'lumot" aria-label="Ma'lumot">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01" stroke-linecap="round"/></svg>
+    <select class="lang-select" id="langSelect" aria-label="Tilni tanlash">
+      <option value="uz">UZ</option>
+      <option value="ru">RU</option>
+      <option value="en">EN</option>
+    </select>
+    <div style="position:relative;">
+      <button class="menu-btn" id="menuToggle" aria-label="Menyu" aria-haspopup="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
-    </div>
-
-    <div class="menu-pop">
-      <button class="icon-btn" id="menuBtn" aria-label="Menyu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/></svg>
-      </button>
-      <div class="menu-panel" id="menuPanel">
-        <div class="grp-label" data-i18n="grp_lang">Til</div>
-        <select class="lang-select" id="langSelect">
-          <option value="uz">O'zbekcha</option>
-          <option value="ru">Русский</option>
-          <option value="en">English</option>
-        </select>
-
-        <div class="grp-label" data-i18n="grp_settings">Sozlamalar</div>
-        <div class="theme-toggle-row">
-          <span data-i18n="dark_mode">Tungi rejim</span>
-          <div class="switch" id="themeSwitch"></div>
-        </div>
-
-        <div class="grp-label" data-i18n="grp_panels">Boshqa panellar</div>
-        <div class="menu-item-row" data-gate="chef">
-          <span data-i18n="panel_chef">Oshpaz paneli</span>
-          <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-        </div>
-        <div class="menu-item-row" data-gate="admin">
-          <span data-i18n="panel_admin">Admin paneli</span>
-          <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-        </div>
+      <div class="dropdown" id="dropdownMenu">
+        <button id="btnSettings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span data-i18n="settings">Sozlamalar</span></button>
+        <button id="btnInfoReopen"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-i18n="infoMenu">Ma'lumot</span></button>
+        <button id="btnChef"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V8a5 5 0 0110 0v3"/></svg><span data-i18n="chefPanel">Oshpaz paneli</span><span class="lock">🔒</span></button>
+        <button id="btnAdmin"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V8a5 5 0 0110 0v3"/></svg><span data-i18n="adminPanel">Admin paneli</span><span class="lock">🔒</span></button>
       </div>
     </div>
   </div>
+  <div class="cat-row" id="catRow"></div>
 </header>
-<div class="ikat-divider"></div>
-
-<div class="cats" id="catsRow"></div>
 
 <main>
-  <div id="sectionsWrap"></div>
+  <h2 class="section-title" id="gridTitle" data-i18n="allItems">Barcha taomlar</h2>
+  <div class="grid" id="grid"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <p data-i18n="noResults">Hech narsa topilmadi. Boshqa so'z bilan qidirib ko'ring.</p>
+  </div>
 </main>
 
-<!-- Birinchi marta kirganda chiqadigan ma'lumot taxtachasi -->
-<div class="overlay" id="infoOverlay">
-  <div class="info-board">
-    <button class="close-x" id="infoClose" aria-label="Yopish">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
-    </button>
-    <div class="eyebrow" data-i18n="board_eyebrow">Ma'lumot</div>
-    <h3 id="boardTitle">—</h3>
-    <p id="boardText">—</p>
-    <div class="board-nav">
-      <button class="nav-btn" id="boardPrev" aria-label="Oldingi">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="dots" id="boardDots"></div>
-      <button class="nav-btn" id="boardNext" aria-label="Keyingi">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
-  </div>
-</div>
+<button class="info-fab" id="infoFab" aria-label="Ma'lumot" title="Ma'lumot">i</button>
 
-<!-- Taom / ichimlik haqida batafsil -->
+<!-- DETAIL MODAL -->
 <div class="overlay" id="detailOverlay">
-  <div class="detail-sheet" id="detailSheet">
-    <button class="close-x" id="detailClose" aria-label="Yopish">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
-    </button>
-    <div class="photo" id="detailPhoto">
-      <svg class="ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-4 4-3-3-4 4"/></svg>
+  <div class="detail-sheet" role="dialog" aria-modal="true">
+    <div class="dimg" id="detailImgWrap">
+      <button class="detail-close" id="detailClose" aria-label="Yopish">✕</button>
     </div>
     <div class="detail-body">
-      <div class="detail-top">
-        <h2 id="detailName">—</h2>
-        <div class="detail-price" id="detailPrice">—</div>
-      </div>
-      <p class="detail-desc" id="detailDesc">—</p>
-      <div class="voice-row">
-        <button class="voice-btn" id="voiceBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12" stroke-linecap="round"/></svg>
-          <span data-i18n="listen">Tinglash</span>
-        </button>
+      <span class="detail-price" id="detailPrice"></span>
+      <h3 class="detail-name" id="detailName"></h3>
+      <p class="detail-desc" id="detailDesc"></p>
+      <button class="voice-btn" id="voiceBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+        <span id="voiceBtnLabel" data-i18n="listen">Ovozli eshitish</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="overlay" id="settingsOverlay">
+  <div class="detail-sheet" role="dialog" aria-modal="true" style="max-height:70vh;">
+    <div class="detail-body" style="padding-top:18px;">
+      <button class="detail-close" id="settingsClose" style="position:static; float:right; background:var(--cream-dim); color:var(--text);">✕</button>
+      <h3 class="detail-name" data-i18n="settings">Sozlamalar</h3>
+      <div class="settings-body">
+        <div class="set-row">
+          <div>
+            <div class="set-label" data-i18n="darkMode">Tungi rejim</div>
+            <div class="set-sub" data-i18n="darkModeSub">Ko'zga yengil, kechqurun uchun qulay</div>
+          </div>
+          <button class="toggle" id="themeToggle" aria-label="Tungi rejim"></button>
+        </div>
+        <div class="set-row">
+          <div>
+            <div class="set-label" data-i18n="fontSize">Shrift o'lchami</div>
+            <div class="set-sub" data-i18n="fontSizeSub">Katta yozuv — kattalar uchun qulay</div>
+          </div>
+          <div class="fs-btns">
+            <button data-fs="0.9" id="fsSmall">A</button>
+            <button data-fs="1" id="fsMed" style="font-size:1.1rem;">A</button>
+            <button data-fs="1.18" id="fsLarge" style="font-size:1.3rem;">A</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Oshpaz / Admin panelga parol darvozasi -->
-<div class="overlay" id="gateOverlay">
-  <div class="gate-box">
-    <svg class="g-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-    <h3 id="gateTitle">Oshpaz paneli</h3>
-    <p data-i18n="gate_desc">Bu bo'lim parol bilan himoyalangan.</p>
-    <input type="password" id="gatePass" placeholder="Parol">
-    <button class="gate-btn" id="gateSubmit" data-i18n="gate_enter">Kirish</button>
-    <div class="gate-msg" id="gateMsg"></div>
-    <button class="icon-btn" id="gateClose" style="margin-top:14px;" aria-label="Yopish">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
-    </button>
+<!-- INFO NOTE -->
+<div class="note-overlay" id="noteOverlay">
+  <div class="note-card" role="dialog" aria-modal="true">
+    <button class="note-close" id="noteClose" aria-label="Yopish">✕</button>
+    <div class="note-eyebrow" id="noteEyebrow">Ma'lumot</div>
+    <h3 class="note-title" id="noteTitle"></h3>
+    <p class="note-text" id="noteText"></p>
+    <div class="note-nav">
+      <button class="note-nav-btn" id="notePrev" aria-label="Oldingi">‹</button>
+      <div class="note-dots" id="noteDots"></div>
+      <button class="note-nav-btn" id="noteNext" aria-label="Keyingi">›</button>
+    </div>
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
-/* ============================================================
-   ADMIN PANELDAN KELISHI KERAK BO'LGAN MA'LUMOTLAR
-   Hozircha demo sifatida shu yerda qo'lda kiritilgan. Kelajakda
-   admin paneli shu MENU_DATA, INFO_SLIDES va CATEGORIES massivlarini
-   backend orqali (masalan JSON fayl yoki API) to'ldirib turadi.
-   ============================================================ */
-const CATEGORIES = [
-  { id: 'all',         uz:'Barchasi',     ru:'Все',        en:'All' },
-  { id: 'ovqatlar',    uz:'Taomlar',      ru:'Блюда',      en:'Food' },
-  { id: 'ichimliklar', uz:'Ichimliklar',  ru:'Напитки',    en:'Drinks' },
-  { id: 'shirinlik',   uz:'Shirinliklar', ru:'Десерты',    en:'Desserts' },
-];
+(function(){
+  "use strict";
 
-const MENU_DATA = [
-  { id:1, cat:'ovqatlar', name:'Osh (Palov)', price:35000, img:'',
-    desc:"Guruch, go'sht, sabzi va piyozdan tayyorlangan an'anaviy o'zbek taomi. Qozonda sekin pishiriladi." },
-  { id:2, cat:'ovqatlar', name:"Lag'mon", price:28000, img:'',
-    desc:"Qo'lda cho'zilgan xamir, go'sht va sabzavotlar bilan pishirilgan mazali sho'rvali taom." },
-  { id:3, cat:'ovqatlar', name:'Manti', price:26000, img:'',
-    desc:"Bug'da pishirilgan, ichiga qiyma va piyoz solingan xamir mahsuloti." },
-  { id:4, cat:'ovqatlar', name:'Shashlik', price:30000, img:'',
-    desc:"Ko'mirda pishirilgan, ziravorlar bilan marinadlangan go'sht kabob." },
-  { id:5, cat:'ovqatlar', name:'Norin', price:24000, img:'',
-    desc:"Ingichka to'g'ralgan xamir va qaynatilgan go'shtdan tayyorlangan sovuq taom." },
-  { id:6, cat:'ichimliklar', name:"Ko'k choy", price:6000, img:'',
-    desc:"An'anaviy o'zbek ko'k choyi, choynakda damlanadi, issiq holda tortiladi." },
-  { id:7, cat:'ichimliklar', name:'Qora choy', price:6000, img:'',
-    desc:"To'yimli va quyuq qora choy, sut yoki limon bilan ham tayyorlanishi mumkin." },
-  { id:8, cat:'ichimliklar', name:'Kompot', price:8000, img:'',
-    desc:"Mavsumiy mevalardan qaynatib tayyorlangan shirin va tetiklantiruvchi ichimlik." },
-  { id:9, cat:'ichimliklar', name:'Ayron', price:7000, img:'',
-    desc:"Qatiq va sovuq sudan tayyorlangan sho'rroq, salqinlashtiruvchi ichimlik." },
-  { id:10, cat:'shirinlik', name:'Halvaytar', price:12000, img:'',
-    desc:"Un, yog' va shakardan tayyorlangan an'anaviy shirinlik." },
-];
+  /* ============ I18N ============ */
+  const I18N = {
+    uz:{ settings:"Sozlamalar", infoMenu:"Ma'lumot", chefPanel:"Oshpaz paneli", adminPanel:"Admin paneli",
+      allItems:"Barcha taomlar", noResults:"Hech narsa topilmadi. Boshqa so'z bilan qidirib ko'ring.",
+      listen:"Ovozli eshitish", stopListen:"To'xtatish", darkMode:"Tungi rejim", darkModeSub:"Ko'zga yengil, kechqurun uchun qulay",
+      fontSize:"Shrift o'lchami", fontSizeSub:"Katta yozuv — kattalar uchun qulay",
+      locked:"Bu panelga kirish uchun parol talab qilinadi. Tez orada ishga tushadi.",
+      searchPh:"Qidiruv...", all:"Barchasi" },
+    ru:{ settings:"Настройки", infoMenu:"Информация", chefPanel:"Панель повара", adminPanel:"Панель админа",
+      allItems:"Все блюда", noResults:"Ничего не найдено. Попробуйте другой запрос.",
+      listen:"Слушать", stopListen:"Остановить", darkMode:"Ночной режим", darkModeSub:"Комфортно для глаз вечером",
+      fontSize:"Размер шрифта", fontSizeSub:"Крупный текст — удобно для старших",
+      locked:"Для входа в эту панель нужен пароль. Скоро будет доступно.",
+      searchPh:"Поиск...", all:"Все" },
+    en:{ settings:"Settings", infoMenu:"Info", chefPanel:"Chef panel", adminPanel:"Admin panel",
+      allItems:"All items", noResults:"Nothing found. Try a different search.",
+      listen:"Listen", stopListen:"Stop", darkMode:"Dark mode", darkModeSub:"Easier on the eyes at night",
+      fontSize:"Text size", fontSizeSub:"Larger text — easier for older guests",
+      locked:"This panel needs a password. Coming soon.",
+      searchPh:"Search...", all:"All" }
+  };
+  let lang = "uz";
 
-const INFO_SLIDES = [
-  { title:"Xush kelibsiz!", text:"Bu yerda menyudagi taom va ichimliklarni ko'rishingiz, tepadagi qidiruv orqali izlashingiz mumkin." },
-  { title:"Qidiruv", text:"Masalan qidiruvga \"ichimliklar\" deb yozsangiz, faqat shu toifa chiqadi. Taom nomini yozib ham qidirishingiz mumkin." },
-  { title:"Taom haqida", text:"Har qanday kartochkani bosing — rasmi, narxi va tavsifi ochiladi. \"Tinglash\" tugmasi orqali ma'lumot ovozli o'qib beriladi." },
-];
+  /* ============ SEED DATA (admin panel will later write to these same storage keys) ============ */
+  const DEFAULT_CONFIG = { name:"Oshxona", logoUrl:"", logoSize:40 };
 
-/* ============================================================
-   I18N — interfeys matnlari (menyu mahsulotlari emas)
-   ============================================================ */
-const I18N = {
-  uz: { search_ph:"Qidirish… masalan: ichimliklar", grp_lang:"Til", grp_settings:"Sozlamalar",
-        dark_mode:"Tungi rejim", grp_panels:"Boshqa panellar", panel_chef:"Oshpaz paneli",
-        panel_admin:"Admin paneli", board_eyebrow:"Ma'lumot", listen:"Tinglash",
-        gate_desc:"Bu bo'lim parol bilan himoyalangan.", gate_enter:"Kirish",
-        empty:"Hech narsa topilmadi", gate_wip:"Bu panel hozircha tayyorlanmoqda." },
-  ru: { search_ph:"Поиск… например: напитки", grp_lang:"Язык", grp_settings:"Настройки",
-        dark_mode:"Тёмный режим", grp_panels:"Другие панели", panel_chef:"Панель повара",
-        panel_admin:"Панель администратора", board_eyebrow:"Информация", listen:"Слушать",
-        gate_desc:"Этот раздел защищён паролем.", gate_enter:"Войти",
-        empty:"Ничего не найдено", gate_wip:"Эта панель пока в разработке." },
-  en: { search_ph:"Search… e.g. drinks", grp_lang:"Language", grp_settings:"Settings",
-        dark_mode:"Dark mode", grp_panels:"Other panels", panel_chef:"Chef panel",
-        panel_admin:"Admin panel", board_eyebrow:"Info", listen:"Listen",
-        gate_desc:"This section is password protected.", gate_enter:"Enter",
-        empty:"Nothing found", gate_wip:"This panel is still under construction." },
-};
+  const DEFAULT_INFO = [
+    { title:{uz:"Xush kelibsiz!",ru:"Добро пожаловать!",en:"Welcome!"},
+      body:{uz:"Bu — bizning raqamli menyumiz. Yuqoridagi qidiruv orqali taom yoki ichimlik toping, yoki pastdagi turkumlardan birini tanlang.",
+            ru:"Это наше цифровое меню. Используйте поиск сверху, чтобы найти блюдо или напиток, либо выберите одну из категорий ниже.",
+            en:"This is our digital menu. Use the search above to find a dish or drink, or pick a category below."} },
+    { title:{uz:"Qanday foydalanish",ru:"Как пользоваться",en:"How to use it"},
+      body:{uz:"Istalgan taomning rasmini bosing — narxi, tavsifi va ovozli tinglash tugmasi ochiladi. Katta yozuvni yoqish uchun yuqoridagi menyudan 'Sozlamalar'ga kiring.",
+            ru:"Нажмите на карточку любого блюда — откроются цена, описание и кнопка озвучки. Крупный шрифт можно включить в разделе 'Настройки'.",
+            en:"Tap any item's card to see its price, description, and a listen button. Turn on large text from the Settings menu above."} },
+    { title:{uz:"Bog'lanish",ru:"Связаться с нами",en:"Get in touch"},
+      body:{uz:"Savol yoki taklifingiz bo'lsa, ofitsiantimizga murojaat qiling. Buyurtma shu yerdan emas, ofitsiant orqali qabul qilinadi.",
+            ru:"Если есть вопрос или пожелание — обратитесь к официанту. Заказ оформляется через официанта, а не отсюда.",
+            en:"If you have a question, just ask your waiter. Orders are placed through the waiter, not from this screen."} }
+  ];
 
-let state = {
-  lang: localStorage.getItem('oshxona_lang') || 'uz',
-  theme: localStorage.getItem('oshxona_theme') || 'light',
-  activeCat: 'all',
-  query: '',
-};
+  const DEFAULT_MENU = [
+    { id:1, cat:"taomlar", name:{uz:"Osh",ru:"Плов",en:"Osh (Plov)"}, price:35000,
+      desc:{uz:"An'anaviy o'zbek oshi — guruch, qora sabzi, mol go'shti va ziravorlar bilan pishirilgan.",
+            ru:"Традиционный узбекский плов — рис, морковь, говядина и специи.",
+            en:"Traditional Uzbek plov — rice, carrots, beef and spices, slow-cooked together."}, img:"" },
+    { id:2, cat:"taomlar", name:{uz:"Manti",ru:"Манты",en:"Manti"}, price:28000,
+      desc:{uz:"Bug'da pishirilgan xamir ichida go'sht va piyoz to'ldirilgan taom.",
+            ru:"Тесто на пару с начинкой из мяса и лука.",
+            en:"Steamed dumplings filled with minced meat and onion."}, img:"" },
+    { id:3, cat:"taomlar", name:{uz:"Lag'mon",ru:"Лагман",en:"Lagman"}, price:30000,
+      desc:{uz:"Qo'lda cho'zilgan uzun xamir, sabzavotlar va go'sht bilan sho'rva shaklida.",
+            ru:"Домашняя тянутая лапша с овощами и мясом в бульоне.",
+            en:"Hand-pulled noodles with vegetables and meat in a savory broth."}, img:"" },
+    { id:4, cat:"taomlar", name:{uz:"Shashlik",ru:"Шашлык",en:"Shashlik"}, price:45000,
+      desc:{uz:"Cho'g'da pishirilgan mol yoki qo'y go'shti shashligi.",
+            ru:"Шашлык из говядины или баранины, приготовленный на углях.",
+            en:"Skewered beef or lamb, grilled over charcoal."}, img:"" },
+    { id:5, cat:"ichimliklar", name:{uz:"Ko'k choy",ru:"Зелёный чай",en:"Green tea"}, price:5000,
+      desc:{uz:"Issiq holda xizmat ko'rsatiladigan an'anaviy ko'k choy.",ru:"Традиционный зелёный чай, подаётся горячим.",
+            en:"Traditional green tea, served hot."}, img:"" },
+    { id:6, cat:"ichimliklar", name:{uz:"Qora choy",ru:"Чёрный чай",en:"Black tea"}, price:5000,
+      desc:{uz:"Kuchli damlangan qora choy.",ru:"Крепко заваренный чёрный чай.",en:"Strongly brewed black tea."}, img:"" },
+    { id:7, cat:"ichimliklar", name:{uz:"Kompot",ru:"Компот",en:"Compote"}, price:8000,
+      desc:{uz:"Mavsumiy mevalardan tayyorlangan uy sharbati.",ru:"Домашний напиток из сезонных фруктов.",
+            en:"House-made drink from seasonal fruit."}, img:"" },
+    { id:8, cat:"ichimliklar", name:{uz:"Limonad",ru:"Лимонад",en:"Lemonade"}, price:10000,
+      desc:{uz:"Yangi limon va yalpizdan tayyorlangan sovutilgan ichimlik.",ru:"Освежающий напиток из свежего лимона и мяты.",
+            en:"Refreshing drink made with fresh lemon and mint."}, img:"" },
+    { id:9, cat:"shirinliklar", name:{uz:"Napoleon tort",ru:"Торт Наполеон",en:"Napoleon cake"}, price:15000,
+      desc:{uz:"Qavat-qavat pishloqli krem bilan tayyorlangan shirinlik.",ru:"Слоёный торт с заварным кремом.",
+            en:"Layered pastry with rich custard cream."}, img:"" },
+    { id:10, cat:"shirinliklar", name:{uz:"Baklava",ru:"Пахлава",en:"Baklava"}, price:12000,
+      desc:{uz:"Yong'oq va asal bilan tayyorlangan sharqona shirinlik.",ru:"Восточная сладость с орехами и мёдом.",
+            en:"Sweet pastry layered with nuts and honey."}, img:"" }
+  ];
 
-/* ---------------- Theme & language ---------------- */
-function applyTheme(){
-  document.documentElement.setAttribute('data-theme', state.theme === 'dark' ? 'dark' : 'light');
-  localStorage.setItem('oshxona_theme', state.theme);
-}
-function applyLang(){
-  const dict = I18N[state.lang];
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const k = el.getAttribute('data-i18n');
-    if(dict[k]) el.textContent = dict[k];
-  });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
-    const k = el.getAttribute('data-i18n-ph');
-    if(dict[k]) el.setAttribute('placeholder', dict[k]);
-  });
-  document.getElementById('langSelect').value = state.lang;
-  localStorage.setItem('oshxona_lang', state.lang);
-  renderCats();
-  renderSections();
-}
-document.getElementById('themeSwitch').addEventListener('click', ()=>{
-  state.theme = state.theme === 'dark' ? 'light' : 'dark';
-  applyTheme();
-});
-document.getElementById('langSelect').addEventListener('change', (e)=>{
-  state.lang = e.target.value;
-  applyLang();
-});
+  const CAT_LABELS = {
+    taomlar:{uz:"Taomlar",ru:"Блюда",en:"Dishes"},
+    ichimliklar:{uz:"Ichimliklar",ru:"Напитки",en:"Drinks"},
+    shirinliklar:{uz:"Shirinliklar",ru:"Десерты",en:"Desserts"}
+  };
 
-/* ---------------- Menu button dropdown ---------------- */
-const menuBtn = document.getElementById('menuBtn');
-const menuPanel = document.getElementById('menuPanel');
-menuBtn.addEventListener('click', (e)=>{ e.stopPropagation(); menuPanel.classList.toggle('open'); });
-document.addEventListener('click', ()=> menuPanel.classList.remove('open'));
-menuPanel.addEventListener('click', e=> e.stopPropagation());
+  const CAT_ICONS = {
+    taomlar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.2"/></svg>',
+    ichimliklar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12l-1.2 15.5A2 2 0 0114.8 20H9.2a2 2 0 01-2-1.5L6 3z"/><path d="M5 3h14"/><path d="M8.5 9.5h7"/></svg>',
+    shirinliklar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 11a8 8 0 0116 0"/><rect x="3" y="11" width="18" height="3" rx="1"/><path d="M5 14l1 6h12l1-6"/></svg>'
+  };
+  const DEFAULT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12h8M12 8v8"/></svg>';
 
-/* ---------------- Categories ---------------- */
-function renderCats(){
-  const row = document.getElementById('catsRow');
-  row.innerHTML = '';
-  CATEGORIES.forEach(c=>{
-    const btn = document.createElement('button');
-    btn.className = 'chip' + (state.activeCat === c.id ? ' active' : '');
-    btn.dataset.cat = c.id;
-    btn.textContent = c[state.lang] || c.uz;
-    btn.addEventListener('click', ()=>{
-      state.activeCat = c.id;
-      state.query = '';
-      document.getElementById('searchInput').value = '';
-      renderCats();
-      renderSections();
-    });
-    row.appendChild(btn);
-  });
-}
+  let config = DEFAULT_CONFIG, infoPages = DEFAULT_INFO, menuItems = DEFAULT_MENU;
+  let activeCat = "all";
+  let searchTerm = "";
+  let noteIndex = 0;
 
-/* ---------------- Menu grid render ---------------- */
-function matchesQuery(item, q){
-  if(!q) return true;
-  q = q.toLowerCase();
-  const cat = CATEGORIES.find(c=>c.id===item.cat);
-  const catNames = cat ? [cat.uz, cat.ru, cat.en].join(' ').toLowerCase() : '';
-  return item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q) || catNames.includes(q);
-}
-
-function photoBlock(item){
-  if(item.img){
-    return `<img src="${item.img}" alt="${item.name}">`;
+  /* ============ STORAGE HELPERS ============ */
+  async function storeGet(key, shared){
+    try{ const r = await window.storage.get(key, !!shared); return r ? JSON.parse(r.value) : null; }
+    catch(e){ return null; }
   }
-  return `<svg class="ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-4 4-3-3-4 4"/></svg>
-  <div class="steam"></div><div class="steam s2"></div><div class="steam s3"></div>`;
-}
+  async function storeSet(key, value, shared){
+    try{ await window.storage.set(key, JSON.stringify(value), !!shared); }catch(e){}
+  }
 
-function renderSections(){
-  const wrap = document.getElementById('sectionsWrap');
-  wrap.innerHTML = '';
-  const q = state.query;
+  async function loadAll(){
+    const c = await storeGet('site-config', true);
+    const i = await storeGet('info-pages', true);
+    const m = await storeGet('menu-items', true);
+    const savedLang = await storeGet('pref-language', false);
+    const savedTheme = await storeGet('pref-theme', false);
+    const savedFs = await storeGet('pref-fontsize', false);
+    config = c || DEFAULT_CONFIG;
+    infoPages = (i && i.length) ? i : DEFAULT_INFO;
+    menuItems = (m && m.length) ? m : DEFAULT_MENU;
+    if(!c) storeSet('site-config', DEFAULT_CONFIG, true);
+    if(!i) storeSet('info-pages', DEFAULT_INFO, true);
+    if(!m) storeSet('menu-items', DEFAULT_MENU, true);
+    if(savedLang) lang = savedLang;
+    document.documentElement.setAttribute('data-theme', savedTheme === 'dark' ? 'dark' : 'light');
+    if(savedFs) document.documentElement.style.setProperty('--fs-scale', savedFs);
+  }
 
-  let cats = state.activeCat === 'all' ? CATEGORIES.filter(c=>c.id!=='all') : CATEGORIES.filter(c=>c.id===state.activeCat);
+  /* ============ RENDER ============ */
+  function t(key){ return (I18N[lang] && I18N[lang][key]) || I18N.uz[key] || key; }
 
-  let anyResult = false;
+  function applyI18n(){
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const k = el.getAttribute('data-i18n');
+      el.textContent = t(k);
+    });
+    document.getElementById('searchInput').placeholder = t('searchPh');
+    document.getElementById('siteName').textContent = config.name || "Oshxona";
+    document.getElementById('logoMark').textContent = (config.name||"O").trim().charAt(0).toUpperCase();
+    document.documentElement.style.setProperty('--logo-size', (config.logoSize||40)+"px");
+    const slot = document.getElementById('logoSlot');
+    if(config.logoUrl){
+      slot.innerHTML = '<img src="'+config.logoUrl+'" alt="'+(config.name||'Logo')+'">';
+    } else {
+      slot.innerHTML = '<span class="logo-mark" id="logoMark">'+((config.name||"O").trim().charAt(0).toUpperCase())+'</span>';
+    }
+  }
 
-  cats.forEach(cat=>{
-    const items = MENU_DATA.filter(it=> it.cat===cat.id && matchesQuery(it, q));
-    if(items.length===0) return;
-    anyResult = true;
+  function renderCategories(){
+    const cats = ["all", ...Array.from(new Set(menuItems.map(m=>m.cat)))];
+    const row = document.getElementById('catRow');
+    row.innerHTML = "";
+    cats.forEach(c=>{
+      const btn = document.createElement('button');
+      btn.className = 'cat-pill' + (activeCat===c ? ' active' : '');
+      btn.textContent = c==="all" ? t('all') : ((CAT_LABELS[c] && CAT_LABELS[c][lang]) || c);
+      btn.addEventListener('click', ()=>{ activeCat = c; searchTerm=""; document.getElementById('searchInput').value=""; renderCategories(); renderGrid(); });
+      row.appendChild(btn);
+    });
+  }
 
-    const section = document.createElement('section');
-    const title = document.createElement('div');
-    title.className = 'section-title';
-    title.textContent = cat[state.lang] || cat.uz;
-    section.appendChild(title);
+  function fmtPrice(n){
+    return n.toLocaleString('ru-RU') + " so'm";
+  }
 
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-
-    items.forEach((item, idx)=>{
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.dataset.cat = item.cat;
-      card.innerHTML = `
-        <div class="photo">${photoBlock(item)}</div>
-        <div class="info">
-          <div class="name">${item.name}</div>
-          <div class="desc">${item.desc}</div>
-          <div class="price">${item.price.toLocaleString('fr-FR')} so'm</div>
-        </div>`;
-      card.addEventListener('click', ()=> openDetail(item));
-      grid.appendChild(card);
-
-      requestAnimationFrame(()=>{
-        setTimeout(()=> card.classList.add('in'), idx*60);
+  function renderGrid(){
+    const grid = document.getElementById('grid');
+    const empty = document.getElementById('emptyState');
+    const title = document.getElementById('gridTitle');
+    let items = menuItems;
+    if(activeCat !== "all") items = items.filter(m=>m.cat===activeCat);
+    if(searchTerm.trim()){
+      const s = searchTerm.trim().toLowerCase();
+      items = menuItems.filter(m=>{
+        const catLabel = ((CAT_LABELS[m.cat]&&CAT_LABELS[m.cat][lang])||m.cat).toLowerCase();
+        const nm = (m.name[lang]||m.name.uz||"").toLowerCase();
+        const ds = (m.desc[lang]||m.desc.uz||"").toLowerCase();
+        return nm.includes(s) || ds.includes(s) || catLabel.includes(s) || m.cat.includes(s);
       });
+      title.textContent = "\u201C"+searchTerm+"\u201D";
+    } else {
+      title.textContent = activeCat==="all" ? t('allItems') : ((CAT_LABELS[activeCat]&&CAT_LABELS[activeCat][lang])||activeCat);
+    }
+
+    grid.innerHTML = "";
+    if(!items.length){ empty.style.display='block'; return; } else { empty.style.display='none'; }
+
+    items.forEach((m,idx)=>{
+      const card = document.createElement('button');
+      card.className = 'card';
+      card.style.animationDelay = (idx*0.045)+"s";
+      const icon = CAT_ICONS[m.cat] || DEFAULT_ICON;
+      const thumbInner = m.img ? '<img src="'+m.img+'" alt="">' : icon;
+      card.innerHTML =
+        '<div class="thumb">'+thumbInner+'<span class="price-badge">'+fmtPrice(m.price)+'</span></div>'+
+        '<div class="info"><div class="cat-label">'+((CAT_LABELS[m.cat]&&CAT_LABELS[m.cat][lang])||m.cat)+'</div>'+
+        '<div class="name">'+(m.name[lang]||m.name.uz)+'</div></div>';
+      card.addEventListener('click', ()=> openDetail(m));
+      grid.appendChild(card);
     });
-
-    section.appendChild(grid);
-    wrap.appendChild(section);
-  });
-
-  if(!anyResult){
-    wrap.innerHTML = `<div class="empty-state">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <div>${I18N[state.lang].empty}</div>
-    </div>`;
   }
-}
 
-document.getElementById('searchInput').addEventListener('input', (e)=>{
-  state.query = e.target.value.trim();
-  renderSections();
-});
-
-/* ---------------- Detail modal + voice ---------------- */
-const detailOverlay = document.getElementById('detailOverlay');
-const detailSheet = document.getElementById('detailSheet');
-let currentUtterance = null;
-
-function openDetail(item){
-  document.getElementById('detailPhoto').innerHTML = photoBlock(item);
-  document.getElementById('detailName').textContent = item.name;
-  document.getElementById('detailPrice').textContent = item.price.toLocaleString('fr-FR') + " so'm";
-  document.getElementById('detailDesc').textContent = item.desc;
-  detailSheet.dataset.cat = item.cat;
-  detailOverlay.classList.add('open');
-  stopVoice();
-}
-document.getElementById('detailClose').addEventListener('click', ()=>{
-  detailOverlay.classList.remove('open');
-  stopVoice();
-});
-detailOverlay.addEventListener('click', (e)=>{ if(e.target===detailOverlay){ detailOverlay.classList.remove('open'); stopVoice(); }});
-
-function stopVoice(){
-  if('speechSynthesis' in window) window.speechSynthesis.cancel();
-  document.getElementById('voiceBtn').classList.remove('speaking');
-}
-document.getElementById('voiceBtn').addEventListener('click', ()=>{
-  const btn = document.getElementById('voiceBtn');
-  if(!('speechSynthesis' in window)){
-    alert("Bu brauzer ovozli o'qishni qo'llab-quvvatlamaydi.");
-    return;
+  /* ============ DETAIL MODAL ============ */
+  let currentUtterance = null;
+  function openDetail(m){
+    document.getElementById('detailPrice').textContent = fmtPrice(m.price);
+    document.getElementById('detailName').textContent = m.name[lang]||m.name.uz;
+    document.getElementById('detailDesc').textContent = m.desc[lang]||m.desc.uz;
+    const imgWrap = document.getElementById('detailImgWrap');
+    const icon = CAT_ICONS[m.cat] || DEFAULT_ICON;
+    imgWrap.innerHTML = (m.img ? '<img src="'+m.img+'" alt="">' : icon) +
+      '<button class="detail-close" id="detailClose" aria-label="Yopish">\u2715</button>';
+    document.getElementById('detailClose').addEventListener('click', closeDetail);
+    document.getElementById('voiceBtn').dataset.text = m.desc[lang]||m.desc.uz;
+    document.getElementById('voiceBtn').dataset.title = m.name[lang]||m.name.uz;
+    resetVoiceBtn();
+    document.getElementById('detailOverlay').classList.add('open');
   }
-  if(btn.classList.contains('speaking')){
+  function closeDetail(){
+    document.getElementById('detailOverlay').classList.remove('open');
     stopVoice();
-    return;
   }
-  const name = document.getElementById('detailName').textContent;
-  const desc = document.getElementById('detailDesc').textContent;
-  const utter = new SpeechSynthesisUtterance(name + '. ' + desc);
-  utter.lang = state.lang === 'ru' ? 'ru-RU' : (state.lang === 'en' ? 'en-US' : 'uz-UZ');
-  utter.rate = 0.95;
-  utter.onend = ()=> btn.classList.remove('speaking');
-  utter.onerror = ()=> btn.classList.remove('speaking');
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(utter);
-  btn.classList.add('speaking');
-});
-
-/* ---------------- Birinchi kirish ma'lumot taxtachasi ---------------- */
-const infoOverlay = document.getElementById('infoOverlay');
-let slideIdx = 0;
-function renderBoard(){
-  const s = INFO_SLIDES[slideIdx];
-  document.getElementById('boardTitle').textContent = s.title;
-  document.getElementById('boardText').textContent = s.text;
-  document.getElementById('boardPrev').disabled = slideIdx===0;
-  document.getElementById('boardNext').disabled = slideIdx===INFO_SLIDES.length-1;
-  const dots = document.getElementById('boardDots');
-  dots.innerHTML='';
-  INFO_SLIDES.forEach((_,i)=>{
-    const d = document.createElement('div');
-    d.className = 'dot' + (i===slideIdx ? ' active':'');
-    dots.appendChild(d);
+  document.getElementById('detailOverlay').addEventListener('click', e=>{
+    if(e.target.id === 'detailOverlay') closeDetail();
   });
-}
-document.getElementById('boardPrev').addEventListener('click', ()=>{ if(slideIdx>0){slideIdx--; renderBoard();}});
-document.getElementById('boardNext').addEventListener('click', ()=>{ if(slideIdx<INFO_SLIDES.length-1){slideIdx++; renderBoard();}});
-document.getElementById('infoClose').addEventListener('click', ()=>{
-  infoOverlay.classList.remove('open');
-  localStorage.setItem('oshxona_info_seen', '1');
-});
-document.getElementById('infoReopenBtn').addEventListener('click', ()=>{
-  slideIdx = 0; renderBoard(); infoOverlay.classList.add('open');
-});
-infoOverlay.addEventListener('click', (e)=>{
-  if(e.target===infoOverlay){ infoOverlay.classList.remove('open'); localStorage.setItem('oshxona_info_seen','1'); }
-});
 
-/* ---------------- 2/3-panel parol darvozasi ---------------- */
-const gateOverlay = document.getElementById('gateOverlay');
-let gateTarget = null;
-document.querySelectorAll('[data-gate]').forEach(row=>{
-  row.addEventListener('click', ()=>{
-    gateTarget = row.dataset.gate;
-    document.getElementById('gateTitle').textContent =
-      gateTarget === 'chef' ? I18N[state.lang].panel_chef : I18N[state.lang].panel_admin;
-    document.getElementById('gatePass').value = '';
-    document.getElementById('gateMsg').textContent = '';
-    menuPanel.classList.remove('open');
-    gateOverlay.classList.add('open');
+  function resetVoiceBtn(){
+    const btn = document.getElementById('voiceBtn');
+    btn.classList.remove('speaking');
+    document.getElementById('voiceBtnLabel').textContent = t('listen');
+  }
+  function stopVoice(){
+    if('speechSynthesis' in window){ window.speechSynthesis.cancel(); }
+    resetVoiceBtn();
+  }
+  document.getElementById('voiceBtn').addEventListener('click', function(){
+    if(!('speechSynthesis' in window)){
+      showToast(lang==='uz' ? "Bu qurilmada ovozli o'qish qo'llab-quvvatlanmaydi." : lang==='ru' ? "Устройство не поддерживает озвучку." : "Voice isn't supported on this device.");
+      return;
+    }
+    if(this.classList.contains('speaking')){ stopVoice(); return; }
+    window.speechSynthesis.cancel();
+    const text = this.dataset.title + ". " + this.dataset.text;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang==='uz' ? 'ru-RU' : (lang==='ru' ? 'ru-RU' : 'en-US'); // uz TTS voices are rare; ru is closest phonetically available
+    u.rate = 0.95;
+    const voices = window.speechSynthesis.getVoices();
+    const match = voices.find(v=>v.lang && v.lang.toLowerCase().startsWith(u.lang.slice(0,2)));
+    if(match) u.voice = match;
+    u.onstart = ()=>{ this.classList.add('speaking'); document.getElementById('voiceBtnLabel').textContent = t('stopListen'); };
+    u.onend = ()=> resetVoiceBtn();
+    u.onerror = ()=> resetVoiceBtn();
+    currentUtterance = u;
+    window.speechSynthesis.speak(u);
   });
-});
-document.getElementById('gateClose').addEventListener('click', ()=> gateOverlay.classList.remove('open'));
-gateOverlay.addEventListener('click', (e)=>{ if(e.target===gateOverlay) gateOverlay.classList.remove('open'); });
-document.getElementById('gateSubmit').addEventListener('click', ()=>{
-  // Eslatma: 2-panel (oshpaz) va 3-panel (admin) hali qurilmagan.
-  // Bu yerda faqat darvoza (gate) interfeysi tayyor — parolni
-  // tekshiruvchi backend ulanganda shu joyga yoziladi.
-  document.getElementById('gateMsg').textContent = I18N[state.lang].gate_wip;
-});
 
-/* ---------------- Init ---------------- */
-applyTheme();
-applyLang();
-if(!localStorage.getItem('oshxona_info_seen')){
-  slideIdx = 0; renderBoard();
-  setTimeout(()=> infoOverlay.classList.add('open'), 400);
-} else {
-  renderBoard();
-}
+  /* ============ INFO NOTE ============ */
+  function renderNoteDots(){
+    const dots = document.getElementById('noteDots');
+    dots.innerHTML = "";
+    infoPages.forEach((_,i)=>{
+      const d = document.createElement('span');
+      d.className = 'note-dot' + (i===noteIndex ? ' active' : '');
+      dots.appendChild(d);
+    });
+  }
+  function renderNote(){
+    const page = infoPages[noteIndex];
+    document.getElementById('noteTitle').textContent = page.title[lang]||page.title.uz;
+    document.getElementById('noteText').textContent = page.body[lang]||page.body.uz;
+    document.getElementById('notePrev').disabled = noteIndex===0;
+    document.getElementById('noteNext').disabled = noteIndex===infoPages.length-1;
+    renderNoteDots();
+  }
+  function openNote(){ noteIndex=0; renderNote(); document.getElementById('noteOverlay').classList.add('open'); }
+  function closeNote(){
+    document.getElementById('noteOverlay').classList.remove('open');
+    storeSet('seen-intro', true, false);
+  }
+  document.getElementById('noteClose').addEventListener('click', closeNote);
+  document.getElementById('noteOverlay').addEventListener('click', e=>{ if(e.target.id==='noteOverlay') closeNote(); });
+  document.getElementById('notePrev').addEventListener('click', ()=>{ if(noteIndex>0){ noteIndex--; renderNote(); } });
+  document.getElementById('noteNext').addEventListener('click', ()=>{ if(noteIndex<infoPages.length-1){ noteIndex++; renderNote(); } });
+  document.getElementById('infoFab').addEventListener('click', openNote);
+  document.getElementById('btnInfoReopen').addEventListener('click', ()=>{ closeDropdown(); openNote(); });
+
+  /* ============ DROPDOWN MENU ============ */
+  const dropdown = document.getElementById('dropdownMenu');
+  function closeDropdown(){ dropdown.classList.remove('open'); }
+  document.getElementById('menuToggle').addEventListener('click', (e)=>{
+    e.stopPropagation(); dropdown.classList.toggle('open');
+  });
+  document.addEventListener('click', (e)=>{ if(!dropdown.contains(e.target)) closeDropdown(); });
+
+  document.getElementById('btnChef').addEventListener('click', ()=>{ closeDropdown(); showToast(t('locked')); });
+  document.getElementById('btnAdmin').addEventListener('click', ()=>{ closeDropdown(); showToast(t('locked')); });
+
+  /* ============ SETTINGS ============ */
+  document.getElementById('btnSettings').addEventListener('click', ()=>{
+    closeDropdown();
+    document.getElementById('settingsOverlay').classList.add('open');
+  });
+  document.getElementById('settingsClose').addEventListener('click', ()=>{
+    document.getElementById('settingsOverlay').classList.remove('open');
+  });
+  document.getElementById('settingsOverlay').addEventListener('click', e=>{
+    if(e.target.id === 'settingsOverlay') document.getElementById('settingsOverlay').classList.remove('open');
+  });
+
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', ()=>{
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    themeToggle.classList.toggle('on', next==='dark');
+    storeSet('pref-theme', next, false);
+  });
+
+  document.querySelectorAll('.fs-btns button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const val = btn.dataset.fs;
+      document.documentElement.style.setProperty('--fs-scale', val);
+      document.querySelectorAll('.fs-btns button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      storeSet('pref-fontsize', val, false);
+    });
+  });
+
+  /* ============ SEARCH & LANG ============ */
+  let searchDebounce;
+  document.getElementById('searchInput').addEventListener('input', (e)=>{
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(()=>{ searchTerm = e.target.value; renderGrid(); }, 120);
+  });
+
+  document.getElementById('langSelect').addEventListener('change', (e)=>{
+    lang = e.target.value;
+    storeSet('pref-language', lang, false);
+    applyI18n(); renderCategories(); renderGrid();
+  });
+
+  /* ============ TOAST ============ */
+  let toastTimer;
+  function showToast(msg){
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=> el.classList.remove('show'), 2600);
+  }
+
+  /* ============ INIT ============ */
+  async function init(){
+    await loadAll();
+    document.getElementById('langSelect').value = lang;
+    themeToggle.classList.toggle('on', document.documentElement.getAttribute('data-theme')==='dark');
+    const fsScale = getComputedStyle(document.documentElement).getPropertyValue('--fs-scale').trim();
+    document.querySelectorAll('.fs-btns button').forEach(b=>{
+      b.classList.toggle('active', b.dataset.fs === fsScale || (fsScale==='' && b.id==='fsMed'));
+    });
+    if(!fsScale) document.getElementById('fsMed').classList.add('active');
+
+    applyI18n();
+    renderCategories();
+    renderGrid();
+
+    const seen = await storeGet('seen-intro', false);
+    if(!seen){ setTimeout(openNote, 450); }
+
+    if('speechSynthesis' in window){ window.speechSynthesis.getVoices(); }
+  }
+
+  init();
+})();
 </script>
 </body>
 </html>
