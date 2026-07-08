@@ -5,6 +5,9 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    // Nisbiy (relative) yo'l — GitHub Pages kabi repo-nomli subfolder ostida
+    // (masalan username.github.io/oshxona/) joylashtirilganda ham fayllar to'g'ri yuklanadi.
+    base: './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

@@ -1,5 +1,5 @@
 {
-  "name": "Oshxona CRM va Raqamli Menyu",
+  "name": "Oshxona CRM va Raqamli Menyu v2",
   "description": "Oshpazlar, afitsiantlar va adminlar uchun mo'ljallangan, ko'p tilli, ovozli va statistik raqamli CRM menyu tizimi.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
